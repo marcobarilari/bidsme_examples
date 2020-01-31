@@ -2,7 +2,7 @@ Options:
   version: 2.3.1
   bidsignore: []
 PlugIns:
-  path: test/resources/plugin/bidsify_plugin.py
+  path: example1/resources/plugins/bidsify_plugin.py
   options: {}
 MRI:
   Nifti_SPM12:
