@@ -1,0 +1,510 @@
+Options:
+  version: 2.3.1
+  bidsignore: []
+PlugIns:
+  path: test/resources/plugin/bidsify_plugin.py
+  options: {}
+MRI:
+  Nifti_SPM12:
+    __ignore__:
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/001-localizer/s1904-0001-00001-000001-01.nii
+        checked: true
+        suffix: ''
+        attributes:
+          ProtocolName: 'localizer'
+        bids: !!omap []
+        json: !!omap []
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/002-al_mtflash3d_sensArray/s1905-0002-00001-000032-01.nii
+        checked: true
+        suffix: ''
+        attributes:
+          SeriesDescription: 'invalid'
+        bids: !!omap []
+        json: !!omap []
+    func:
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/002-cmrr_mbep2d_bold_mb2_invertpe/f1904-0002-00001-000001-01.nii
+        example: func/sub-003_ses-HCL_task-nBack_dir-PA_run-1_bold
+        checked: true
+        suffix: bold
+        attributes:
+          ProtocolName: cmrr_mbep2d_bold_mb2_invertpe
+          ImageType: ORIGINAL\\PRIMARY\\M\\MB\\ND\\MOSAIC
+          SeriesDescription: 'nBack'
+        bids: !!omap
+          - dir: PA
+          - task: nBack
+          - acq: ~
+          - ce: ~
+          - rec: ~
+          - run: <AcquisitionNumber>
+          - echo: ~
+        json: !!omap
+          - TaskName: <<bids:task>>
+          - Instructions: ""
+          - TaskDescription: ""
+          - CogAtlasID: ""
+          - CogPOID: ""
+          - RepetitionTime: <time3:RepetitionTime>
+          - NumberOfVolumesDiscardedByScanner: ""
+          - NumberOfVolumesDiscardedByUser: ""
+          - DelayTime: 0
+          - DelayAfterTrigger: ""
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/006-cmrr_mbep2d_bold_mb2_invertpe/f1904-0006-00001-000001-01.nii
+        example: func/sub-003_ses-HCL_task-rest_dir-PA_run-1_bold
+        checked: true
+        suffix: bold
+        attributes:
+          ProtocolName: cmrr_mbep2d_bold_mb2_invertpe
+          ImageType: ORIGINAL\\PRIMARY\\M\\MB\\ND\\MOSAIC
+          SeriesDescription: 'rest'
+        bids: !!omap
+          - dir: PA
+          - task: rest
+          - acq: ~
+          - ce: ~
+          - rec: ~
+          - run: <AcquisitionNumber>
+          - echo: ~
+        json: !!omap
+          - TaskName: <<bids:task>>
+          - Instructions: ""
+          - TaskDescription: ""
+          - CogAtlasID: ""
+          - CogPOID: ""
+          - RepetitionTime: <time3:RepetitionTime>
+          - NumberOfVolumesDiscardedByScanner: ""
+          - NumberOfVolumesDiscardedByUser: ""
+          - DelayTime: 0
+          - DelayAfterTrigger: ""
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/004-cmrr_mbep2d_bold_mb2_task_fat/f1904-0004-00001-000001-01.nii
+        example: func/sub-003_ses-HCL_task-nBack_dir-AP_run-1_bold
+        checked: true
+        suffix: bold
+        attributes:
+          ProtocolName: cmrr_mbep2d_bold_mb2_task_fat
+          ImageType: ORIGINAL\\PRIMARY\\M\\MB\\ND\\MOSAIC
+        bids: !!omap
+          - dir: AP
+          - task: nBack
+          - acq: ~
+          - ce: ~
+          - rec: ~
+          - run: <AcquisitionNumber>
+          - echo: ~
+        json: !!omap
+          - TaskName: <<bids:task>>
+          - Instructions: ""
+          - TaskDescription: ""
+          - CogAtlasID: ""
+          - CogPOID: ""
+          - RepetitionTime: <time3:RepetitionTime>
+          - NumberOfVolumesDiscardedByScanner: ""
+          - NumberOfVolumesDiscardedByUser: ""
+          - DelayTime: 0
+          - DelayAfterTrigger: ""
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/008-cmrr_mbep2d_bold_mb2_rest/f1904-0008-00001-000001-01.nii
+        example: func/sub-003_ses-HCL_task-rest_dir-AP_run-1_bold
+        checked: true
+        suffix: bold
+        attributes:
+          ProtocolName: cmrr_mbep2d_bold_mb2_rest
+          ImageType: ORIGINAL\\PRIMARY\\M\\MB\\ND\\MOSAIC
+        bids: !!omap
+          - dir: AP
+          - task: rest
+          - acq: ~
+          - ce: ~
+          - rec: ~
+          - run: <AcquisitionNumber>
+          - echo: ~
+        json: !!omap
+          - TaskName: <<bids:task>>
+          - Instructions: ""
+          - TaskDescription: ""
+          - CogAtlasID: ""
+          - CogPOID: ""
+          - RepetitionTime: <time3:RepetitionTime>
+          - NumberOfVolumesDiscardedByScanner: ""
+          - NumberOfVolumesDiscardedByUser: ""
+          - DelayTime: 0
+          - DelayAfterTrigger: ""
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-LCL/MRI/004-cmrr_mbep2d_bold_mb2_task_nfat/f1894-0004-00001-000001-01.nii
+        example: func/sub-003_ses-LCL_task-nBack_dir-AP_run-1_bold
+        checked: true
+        suffix: bold
+        attributes:
+          ProtocolName: cmrr_mbep2d_bold_mb2_task_nfat
+          ImageType: ORIGINAL\\PRIMARY\\M\\MB\\ND\\MOSAIC
+        bids: !!omap
+          - dir: AP
+          - task: nBack
+          - acq: ~
+          - ce: ~
+          - rec: ~
+          - run: <AcquisitionNumber>
+          - echo: ~
+        json: !!omap
+          - TaskName: <<bids:task>>
+          - Instructions: ""
+          - TaskDescription: ""
+          - CogAtlasID: ""
+          - CogPOID: ""
+          - RepetitionTime: <time3:RepetitionTime>
+          - NumberOfVolumesDiscardedByScanner: ""
+          - NumberOfVolumesDiscardedByUser: ""
+          - DelayTime: 0
+          - DelayAfterTrigger: ""
+    fmap:
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/010-gre_field_mapping/s1904-0010-00001-000001-01.nii
+        example: fmap/sub-003_ses-HCL_magnitude1
+        checked: true
+        suffix: magnitude<EchoNumbers>
+        attributes:
+          ProtocolName: 'gre_field_mapping'
+          ImageType: 'ORIGINAL\\PRIMARY\\M\\ND'
+          SeriesDescription: 'HCL/LCL'
+        bids: !!omap
+          - acq: ~
+          - ce: ~
+          - dir: ~
+          - run: ~
+        json: !!omap
+          - EchoTime: <time3:EchoTime>
+          - IntendedFor:
+              - "func/<<subject>>_<<session>>_task-nBack_bold.nii"
+              - "func/<<subject>>_<<session>>_task-rest_bold.nii"
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/015-gre_field_mapping/s1905-0015-00001-000001-01.nii
+        example: fmap/sub-003_ses-STROOP_magnitude1
+        checked: true
+        suffix: magnitude<EchoNumbers>
+        attributes:
+          ProtocolName: 'gre_field_mapping'
+          ImageType: 'ORIGINAL\\PRIMARY\\M\\ND'
+          SeriesDescription: 'STROOP'
+        bids: !!omap
+          - acq: ~
+          - ce: ~
+          - dir: ~
+          - run: ~
+        json: !!omap
+          - EchoTime: <time3:EchoTime>
+          - IntendedFor:
+              - "anat/<<subject>>_<<session>>_acq-PDw_echo-*_MPM.nii"
+              - "anat/<<subject>>_<<session>>_acq-MTw_echo-*_MPM.nii"
+              - "anat/<<subject>>_<<session>>_acq-T1w_echo-*_MPM.nii"
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/011-gre_field_mapping/s1904-0011-00001-000001-02.nii
+        example: fmap/sub-003_ses-HCL_phasediff
+        checked: true
+        suffix: phasediff
+        attributes:
+          ProtocolName: 'gre_field_mapping'
+          ImageType: 'ORIGINAL\\PRIMARY\\P\\ND'
+          SeriesDescription: 'HCL/LCL'
+        bids: !!omap
+          - acq: ~
+          - ce: ~
+          - dir: ~
+          - run: ~
+        json: !!omap
+          - EchoTime: ~
+          - EchoTime1: <time6:CSASeriesHeaderInfo/MrPhoenixProtocol/alTE/0>
+          - EchoTime2: <time6:CSASeriesHeaderInfo/MrPhoenixProtocol/alTE/1>
+          - IntendedFor:
+              - "func/<<subject>>_<<session>>_task-nBack_bold.nii"
+              - "func/<<subject>>_<<session>>_task-rest_bold.nii"
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/016-gre_field_mapping/s1905-0016-00001-000001-02.nii
+        example: fmap/sub-003_ses-STROOP_phasediff
+        checked: true
+        suffix: phasediff
+        attributes:
+          ProtocolName: 'gre_field_mapping'
+          ImageType: 'ORIGINAL\\PRIMARY\\P\\ND'
+          SeriesDescription: 'STROOP'
+        bids: !!omap
+          - acq: ~
+          - ce: ~
+          - dir: ~
+          - run: ~
+        json: !!omap
+          - EchoTime: ~
+          - EchoTime1: <time6:CSASeriesHeaderInfo/MrPhoenixProtocol/alTE/0>
+          - EchoTime2: <time6:CSASeriesHeaderInfo/MrPhoenixProtocol/alTE/1>
+          - IntendedFor:
+              - "anat/<<subject>>_<<session>>_acq-PDw_echo-*_MPM.nii"
+              - "anat/<<subject>>_<<session>>_acq-MTw_echo-*_MPM.nii"
+              - "anat/<<subject>>_<<session>>_acq-T1w_echo-*_MPM.nii"
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/002-al_mtflash3d_sensArray/s1905-0002-00001-000032-01.nii
+        example: fmap/sub-003_ses-STROOP_acq-HeadPDw_B1minus
+        checked: true
+        suffix: B1minus
+        attributes:
+          ProtocolName: 'al_mtflash3d_sensArray'
+          SeriesDescription: 'PDw'
+        bids: !!omap
+          - acq: HeadPDw
+          - mod: ~
+        json: !!omap
+          - EchoTime: <time3:EchoTime>
+          - IntendedFor:
+              - "anat/<<subject>>_<<session>>_acq-<<bids:mod>>_echo-*_MPM.nii"
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/003-al_mtflash3d_sensBody/s1905-0003-00001-000032-01.nii
+        example: fmap/sub-003_ses-STROOP_acq-BodyPDw_B1minus
+        checked: true
+        suffix: B1minus
+        attributes:
+          ProtocolName: 'al_mtflash3d_sensBody'
+          SeriesDescription: 'PDw'
+        bids: !!omap
+          - acq: BodyPDw
+          - mod: ~
+        json: !!omap
+          - EchoTime: <time3:EchoTime>
+          - IntendedFor:
+              - "anat/<<subject>>_<<session>>_acq-<<bids:mod>>_echo-*_MPM.nii"
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/014-al_B1mapping/s1905-0014-00001-000001-01.nii
+        example: fmap/sub-003_ses-STROOP_echo-1_fa-1_B1plus
+        checked: true
+        suffix: B1plus
+        attributes:
+          ProtocolName: 'al_B1mapping'
+        bids: !!omap
+          - echo: <EchoNumbers>
+          - fa: <AcquisitionNumber>
+        json: !!omap
+          - EchoTime: <time3:EchoTime>
+          - B1mapNominalFAValues: <B1mapNominalFAValues>
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/006-al_mtflash3d_sensArray/s1905-0006-00001-000032-01.nii
+        example: fmap/sub-003_ses-STROOP_acq-HeadT1w_B1minus
+        checked: true
+        suffix: B1minus
+        attributes:
+          ProtocolName: 'al_mtflash3d_sensArray'
+          SeriesDescription: 'T1w'
+        bids: !!omap
+          - acq: HeadT1w
+          - mod: ~
+        json: !!omap
+          - EchoTime: <time3:EchoTime>
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/007-al_mtflash3d_sensBody/s1905-0007-00001-000032-01.nii
+        example: fmap/sub-003_ses-STROOP_acq-BodyT1w_B1minus
+        checked: true
+        suffix: B1minus
+        attributes:
+          ProtocolName: 'al_mtflash3d_sensBody'
+          SeriesDescription: 'T1w'
+        bids: !!omap
+          - acq: BodyT1w
+          - mod: ~
+        json: !!omap
+          - IntendedFor:
+              - "anat/<<subject>>_<<session>>_acq-<<bids:mod>>_echo-*_MPM.nii"
+          - EchoTime: <time3:EchoTime>
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/010-al_mtflash3d_sensArray/s1905-0010-00001-000032-01.nii
+        example: fmap/sub-003_ses-STROOP_acq-HeadMTw_B1minus
+        checked: true
+        suffix: B1minus
+        attributes:
+          ProtocolName: 'al_mtflash3d_sensArray'
+          SeriesDescription: 'MTw'
+        bids: !!omap
+          - acq: HeadMTw
+          - mod: ~
+        json: !!omap
+          - IntendedFor:
+              - "anat/<<subject>>_<<session>>_acq-<<bids:mod>>_echo-*_MPM.nii"
+          - EchoTime: <time3:EchoTime>
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/011-al_mtflash3d_sensBody/s1905-0011-00001-000032-01.nii
+        example: fmap/sub-003_ses-STROOP_acq-BodyMTw_B1minus
+        checked: true
+        suffix: B1minus
+        attributes:
+          ProtocolName: 'al_mtflash3d_sensBody'
+          SeriesDescription: 'MTw'
+        bids: !!omap
+          - acq: BodyMTw
+          - mod: ~
+        json: !!omap
+          - IntendedFor:
+              - "anat/<<subject>>_<<session>>_acq-<<bids:mod>>_echo-*_MPM.nii"
+          - EchoTime: <time3:EchoTime>
+    dwi:
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/012-cmrr_mbep2d_diff_NODDI_invertpe/s1904-0012-00001-000001-01.nii
+        example: dwi/sub-003_ses-HCL_acq-RF_dir-PA_run-1_dwi
+        checked: true
+        suffix: dwi
+        attributes:
+          ProtocolName: cmrr_mbep2d_diff_NODDI_invertpe
+        bids: !!omap
+          - dir: PA
+          - acq: RF
+          - run: <AcquisitionNumber>
+        json: !!omap []
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/013-cmrr_mbep2d_diff_NODDI/f1904-0013-00001-000001-01.nii
+        example: dwi/sub-003_ses-HCL_acq-RF_dir-AP_run-1_dwi
+        checked: true
+        suffix: dwi
+        attributes:
+          ProtocolName: cmrr_mbep2d_diff_NODDI
+        bids: !!omap
+          - dir: AP
+          - acq: RF
+          - run: <AcquisitionNumber>
+        json: !!omap []
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/014-cmrr_mbep2d_diff_NODDI_noise/s1904-0014-00001-000001-01.nii
+        example: dwi/sub-003_ses-HCL_acq-noRF_dir-AP_run-1_dwi
+        checked: true
+        suffix: dwi
+        attributes:
+          ProtocolName: cmrr_mbep2d_diff_NODDI_noise
+        bids: !!omap
+          - dir: AP
+          - acq: noRF
+          - run: <AcquisitionNumber>
+        json: !!omap []
+    anat:
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-LCL/MRI/012-t1_mpr_sag_p2_iso/s1894-0012-00001-000224-01.nii
+        example: anat/sub-003_ses-LCL_T1w
+        checked: true
+        suffix: T1w
+        attributes:
+          ProtocolName: t1_mpr_sag_p2_iso
+        bids: !!omap
+          - acq: ~
+          - ce: ~
+          - rec: ~
+          - run: ~
+          - mod: ~
+        json: !!omap
+          - ContrastBolusIngredient: ~
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-LCL/MRI/013-t2_spc_da-fl_sag_p2_iso/s1894-0013-00001-000192-01.nii
+        example: anat/sub-003_ses-LCL_FLAIR
+        checked: true
+        suffix: FLAIR
+        attributes:
+          ProtocolName: 't2_spc_da-fl_sag_p2_iso'
+        bids: !!omap
+          - acq: ~
+          - ce: ~
+          - rec: ~
+          - run: ~
+          - mod: ~
+        json: !!omap
+          - ContrastBolusIngredient: ~
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/004-al_mtflash3d_PDw/s1905-0004-00001-000176-01.nii
+        example: anat/sub-003_ses-STROOP_acq-PDw_part-mag_echo-1_MPM
+        checked: true
+        suffix: MPM
+        attributes:
+          ProtocolName: 'al_mtflash3d_PDw'
+          ImageType: 'ORIGINAL\\PRIMARY\\M\\ND'
+        bids: !!omap
+          - acq: PDw
+          - ce: ~
+          - rec: ~
+          - part: mag
+          - run: ~
+          - echo: <EchoNumbers>
+          - mod: ~
+        json: !!omap
+          - MTState: "Off"
+          - ContrastBolusIngredient: ~
+          - EchoTime: <time3:EchoTime>
+          - RepetitionTime: <time3:RepetitionTime>
+          - FlipAngle: <FlipAngle>
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/008-al_mtflash3d_T1w/s1905-0008-00001-000176-01.nii
+        example: anat/sub-003_ses-STROOP_acq-T1w_part-mag_echo-1_MPM
+        checked: true
+        suffix: MPM
+        attributes:
+          ProtocolName: al_mtflash3d_T1w
+          ImageType: 'ORIGINAL\\PRIMARY\\M\\ND'
+        bids: !!omap
+          - acq: T1w
+          - part: mag
+          - ce: ~
+          - rec: ~
+          - run: ~
+          - mod: ~
+          - echo: <EchoNumbers>
+        json: !!omap
+          - ContrastBolusIngredient: ~
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/012-al_mtflash3d_MTw/s1905-0012-00001-000176-01.nii
+        example: anat/sub-003_ses-STROOP_acq-MTw_part-mag_echo-1_MPM
+        checked: true
+        suffix: MPM
+        attributes:
+          ProtocolName: 'al_mtflash3d_MTw'
+          ImageType: 'ORIGINAL\\PRIMARY\\M\\ND'
+        bids: !!omap
+          - acq: MTw
+          - ce: ~
+          - rec: ~
+          - part: mag
+          - run: ~
+          - echo: <EchoNumbers>
+          - mod: ~
+        json: !!omap
+          - MTState: "On"
+          - ContrastBolusIngredient: ~
+          - EchoTime: <time3:EchoTime>
+          - RepetitionTime: <time3:RepetitionTime>
+          - FlipAngle: <FlipAngle>
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/005-al_mtflash3d_PDw/s1905-0005-00001-000176-01.nii
+        example: anat/sub-003_ses-STROOP_acq-PDw_part-phase_echo-1_MPM
+        checked: true
+        suffix: MPM
+        attributes:
+          ProtocolName: 'al_mtflash3d_PDw'
+          ImageType: 'ORIGINAL\\PRIMARY\\P\\ND'
+        bids: !!omap
+          - acq: PDw
+          - ce: ~
+          - rec: ~
+          - part: phase
+          - run: ~
+          - echo: <EchoNumbers>
+          - mod: ~
+        json: !!omap
+          - MTState: "Off"
+          - ContrastBolusIngredient: ~
+          - EchoTime: <time3:EchoTime>
+          - RepetitionTime: <time3:RepetitionTime>
+          - FlipAngle: <FlipAngle>
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/009-al_mtflash3d_T1w/s1905-0009-00001-000176-01.nii
+        example: anat/sub-003_ses-STROOP_acq-T1w_part-phase_echo-1_T1w
+        checked: true
+        suffix: MPM
+        attributes:
+          ProtocolName: al_mtflash3d_T1w
+          ImageType: 'ORIGINAL\\PRIMARY\\P\\ND'
+        bids: !!omap
+          - acq: T1w
+          - part: phase
+          - ce: ~
+          - rec: ~
+          - run: ~
+          - mod: ~
+          - echo: <EchoNumbers>
+        json: !!omap
+          - ContrastBolusIngredient: ~
+      - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/013-al_mtflash3d_MTw/s1905-0013-00001-000176-01.nii
+        example: anat/sub-003_ses-STROOP_acq-MTw_part-phase_echo-1_MPM
+        checked: true
+        suffix: MPM
+        attributes:
+          ProtocolName: 'al_mtflash3d_MTw'
+          ImageType: 'ORIGINAL\\PRIMARY\\P\\ND'
+        bids: !!omap
+          - acq: MTw
+          - ce: ~
+          - rec: ~
+          - part: phase
+          - run: ~
+          - echo: <EchoNumbers>
+          - mod: ~
+        json: !!omap
+          - MTState: "On"
+          - ContrastBolusIngredient: ~
+          - EchoTime: <time3:EchoTime>
+          - RepetitionTime: <time3:RepetitionTime>
+          - FlipAngle: <FlipAngle>

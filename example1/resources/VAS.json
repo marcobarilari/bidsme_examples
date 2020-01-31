@@ -1,0 +1,22 @@
+{
+  "trial_type":{
+    "LongName":"Asked question",
+    "Description":"State evaluation question",
+    "Levels":{
+      "Motivation":"Estimation of motivation",
+      "Happiness":"Estimation of happiness",
+      "Fatigue":"Estimation of fatigue",
+      "Openness":"Estimation of openness",
+      "Stress":"Estimation of stress",
+      "Anxiety":"Estimation of anxiety",
+      "Effort":"Estimation of effort"
+    }
+  },
+  "stim_file":{
+    "LongName":"Image presented during question"
+  },
+  "value":{
+    "LongName":"Recieved estimation value",
+    "Description":"Recieved estimation value in scale from 0 to 100"
+  }
+}

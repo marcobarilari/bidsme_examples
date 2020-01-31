@@ -1,0 +1,40 @@
+{
+  "onset":{
+    "LongName":"Onset (in seconds) of the event",
+    "Description":"Onset (in seconds) of the event measured from the beginning of the acquisition of the first volume in the corresponding task imaging data file.",
+    "Units":"s"
+  },
+  "duration":{
+    "LongName":"Time that stimulus was presented",
+    "Units":"s"
+  },
+  "response_time":{
+    "LongName":"Time taked to respond to stimulus",
+    "Units":"s"
+  },
+  "trial_type":{
+    "LongName":"Condition presented to subject",
+    "Levels":{
+      "Test_1Back":"",
+      "Test_2Back":"",
+      "Test_3Back":""
+    }
+  },
+  "block":{
+    "LongName":"Id of block for trial"
+  },
+  "value":{
+    "LongName":"Recieved responce",
+    "Levels":{
+      "c":"correct",
+      "n":"non correct"
+    }
+  },
+  "exp_value":{
+    "LongName":"Expected responce",
+    "Levels":{
+      "c":"correct",
+      "n":"non correct"
+    }
+  }
+}

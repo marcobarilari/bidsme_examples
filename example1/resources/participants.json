@@ -1,0 +1,69 @@
+{
+  "participant_id":{
+    "LongName":"Participant Id",
+    "Description":"label identifying a particular subject"
+  },
+  "age":{
+    "LongName":"Age",
+    "Description":"Age of a subject",
+    "Units":"year"
+  },
+  "sex":{
+    "LongName":"Sex",
+    "Description":"Sex of a subject",
+    "Levels":{
+      "F":"Female",
+      "M":"Male"
+    }
+  },
+  "education":{
+    "LongName":"Education level",
+    "Description":"Education level"
+  },
+  "group":{
+    "LongName":"group",
+    "Description":"Group subject belongs",
+    "Levels":{
+      "patient":"patient",
+      "control":"control"
+    }
+  },
+  "handiness":{
+    "LongName":"Handiness of subject",
+    "Levels":{
+      "r":"right-handed",
+      "l":"left-handed"
+    }
+  },
+  "paired":{
+    "LongName":"Paired Id",
+    "Description":"Subject Id paired with this subject"
+  },
+  "ses_1":{
+    "LongName":"First session",
+    "Description":"Id of the first session taken by subject",
+    "Levels":{
+      "ses-LCL":"Low charge level",
+      "ses-HCL":"High charge level",
+      "ses-STROOP":"Multiparametric scan"
+    }
+  },
+  "ses_2":{
+    "LongName":"Second session",
+    "Description":"Id of the second session taken by subject",
+    "Levels":{
+      "ses-LCL":"Low charge level",
+      "ses-HCL":"High charge level",
+      "ses-STROOP":"Multiparametric scan"
+    }
+  },
+  "ses_3":{
+    "LongName":"Third session",
+    "Description":"Id of the second session taken by subject",
+    "Levels":{
+      "ses-LCL":"Low charge level",
+      "ses-HCL":"High charge level",
+      "ses-STROOP":"Multiparametric scan"
+    }
+  }
+}
