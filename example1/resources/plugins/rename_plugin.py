@@ -177,8 +177,6 @@ def SessionEndEP(session):
                       False)
 
     # parcing log files
-    if dry_run:
-        continue
     if session["session"] == "ses-STROOP":
         return 0
 
