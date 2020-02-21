@@ -1,11 +1,11 @@
 import os
 import pandas
-import glob
 import logging
 import shutil
 
 from tools import tools 
 from bidsMeta import BIDSfieldLibrary
+from bids import BidsSession
 
 from definitions import Series, checkSeries
 
@@ -35,6 +35,7 @@ excel_col_list = {'Patient' : 'pat',
                   }
 
 sub_columns = BIDSfieldLibrary()
+
 
 def InitEP(source: str, destination: str,
            dry: bool,
@@ -71,8 +72,8 @@ def InitEP(source: str, destination: str,
                               | df_subjects['cnt'].notnull()]
 
 
-def SubjectEP(session):
-    sub_id = int(session["subject"])
+def SubjectEP(session: BidsSession) -> int:
+    sub_id = int(session.subject)
     index = df_subjects.loc[df_subjects["pat"] == sub_id].index 
     status = 0
     prefix = "pat"
@@ -93,7 +94,7 @@ def SubjectEP(session):
     age = int(line[1])
     education = int(line[2])
     values = sub_columns.GetTemplate()
-    values["participant_id"] = "sub-" + session["subject"]
+    values["participant_id"] = "sub-" + session.subject
     values["sex"] = sex
     values["age"] = age
     values["education"] = education
@@ -113,7 +114,7 @@ def SubjectEP(session):
     scans_map = {}
     scans_order = sorted([os.path.basename(s) for s in
                           tools.lsdirs(os.path.join(rawfolder,
-                                                    session["subject"]),
+                                                    session.subject),
                                        "s*")
                           ])
     for ind, s in enumerate(("_1", "_2", "_3")):
@@ -161,27 +162,31 @@ def SubjectEP(session):
     if not os.path.isfile(model_participants):
         sub_columns.DumpDefinitions(model_participants)
 
-    session["subject"] = "sub-" + session["subject"]
+    session.subject = "sub-" + session.subject
     return 0
 
 
-def SessionEP(session):
+def SessionEP(session: BidsSession) -> int:
     # retrieving correct session name
-    session["session"] = scans_map[session["session"]]
+    session.session = scans_map[session.session]
     return 0
 
 
-def SessionEndEP(session):
-    res = checkSeries(os.path.join(session["out_path"], "MRI"),
-                      session["subject"], session["session"],
-                      False)
+def SessionEndEP(session: BidsSession):
+    out_path = os.path.join(bidsfolder,
+                            session.getPath(True),
+                            "MRI")
+    if not checkSeries(out_path,
+                       session.subject, session.session,
+                       False):
+        return 1
 
     # parcing log files
-    if session["session"] == "ses-STROOP":
+    if session.session == "ses-STROOP":
         return 0
 
-    logs = os.path.join(session["in_path"], "inp")
-    aux_d = os.path.join(session["out_path"], "aux")
+    logs = os.path.join(session.in_path, "inp")
+    aux_d = os.path.join(out_path, "aux")
     if not os.path.isdir(logs):
         raise NotADirectoryError(logs)
 
@@ -197,5 +202,5 @@ def SessionEndEP(session):
         if not os.path.isfile(file):
             raise FileNotFoundError(file)
         shutil.copy2(file, aux_d)
-    
+
     return 0

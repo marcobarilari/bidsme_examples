@@ -54,7 +54,7 @@ for ses in Series:
 
 def checkSeries(path: str,
                 subject: str, session: str,
-                critical: bool) -> None:
+                critical: bool) -> bool:
     """
     Retrieve list of series from path and checks 
     its compatibility with defined list
@@ -74,7 +74,7 @@ def checkSeries(path: str,
     if session not in Series:
         msg = "{}/{}: Invalid session".format(subject, session)
         reportError(msg, critical, KeyError)
-        return
+        return False
     passed = True
     series = sorted(os.listdir(path))
     series = [s.split("-",1)[1] for s in series]
