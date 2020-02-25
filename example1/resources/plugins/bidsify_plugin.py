@@ -1,11 +1,8 @@
 import os
 import shutil
 import logging
-import pandas
 
-import Modules
-
-from definitions import Series, checkSeries
+from definitions import checkSeries
 
 logger = logging.getLogger(__name__)
 
@@ -28,34 +25,12 @@ def InitEP(source: str, destination: str, dry: bool) -> int:
     bidsfolder = destination
     dry_run = dry
 
-    participants = os.path.join(rawfolder, "participants.tsv")
-    if not os.path.isfile(participants):
-        e = "participants.tsv not found in {}".format(rawfolder)
-        logger.critical(e)
-        raise FileNotFoundError("participants.tsv not found")
-
-    global participants_table
-    participants_table = pandas.read_csv(participants, sep='\t',
-                                         header=0,
-                                         index_col="participant_id",
-                                         na_values="n/a")
-
-    participants_table = participants_table.groupby("participant_id")\
-        .ffill().drop_duplicates()
-    duplicates = participants_table.index.duplicated(keep=False)
-    if duplicates.any():
-        logger.error("One or several subjects have conflicting values."
-                     "See {} for details"
-                     .format(participants))
-        raise KeyError("Conflicting values in subject descriptions")
-    Modules.baseModule.sub_BIDSfields.LoadDefinitions(os.path.join(rawfolder, 
-                                                      "participants.json"))
 
 def SessionEP(scan):
     global series
     global sid
-    sub = scan["subject"]
-    ses = scan["session"]
+    sub = scan.subject
+    ses = scan.session
     path = os.path.join(rawfolder,
                         sub, ses,
                         "MRI")
@@ -99,21 +74,18 @@ series = list()
 sid = -1
 Intended = ""
 
+
 def SequenceEP(recording):
     global series
     global sid
     global Intended
     Intended = ""
-    sub = recording.subId()
-    part = participants_table.loc[sub]
-    for f in participants_table.columns:
-        recording.sub_BIDSvalues[f] = part[f]
     sid += 1
     recid = series[sid] 
     if recid != recording.recId():
         logger.warning("{}: Id mismatch folder {}"
                        .format(recording.recIdentity(False),
-                                recid))
+                               recid))
     if recid == "cmrr_mbep2d_bold_mb2_invertpe":
         mod = series[sid + 1]
         if mod.endswith("cmrr_mbep2d_bold_mb2_task_fat"):
