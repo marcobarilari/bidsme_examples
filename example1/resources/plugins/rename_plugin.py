@@ -34,7 +34,7 @@ excel_col_list = {'Patient' : 'pat',
                   '1.1': "cnt_1", '2.1': "cnt_2", '3.1': "cnt_3",
                   }
 
-sub_columns = BIDSfieldLibrary()
+# sub_columns = BIDSfieldLibrary()
 
 
 def InitEP(source: str, destination: str,
@@ -57,10 +57,6 @@ def InitEP(source: str, destination: str,
     if not os.path.isfile(subject_file):
         raise FileNotFoundError("Subject file '{}' not found"
                                 .format(subject_file))
-
-    # generating model participants.tsv
-    model_participants = os.path.join(resources, "participants.json")
-    sub_columns.LoadDefinitions(model_participants)
 
     # creating df for subjects
     global df_subjects
@@ -93,20 +89,19 @@ def SubjectEP(session: BidsSession) -> int:
     sex = line[0]
     age = int(line[1])
     education = int(line[2])
-    values = sub_columns.GetTemplate()
-    values["participant_id"] = "sub-" + session.subject
-    values["sex"] = sex
-    values["age"] = age
-    values["education"] = education
+    session.sub_values["participant_id"] = "sub-" + session.subject
+    session.sub_values["sex"] = sex
+    session.sub_values["age"] = age
+    session.sub_values["education"] = education
 
     # looking for pairing
     if status == 0:
-        values["group"] = "patient"
-        values["paired"] = "sub-{:03}".format(int(df_subjects
+        session.sub_values["group"] = "patient"
+        session.sub_values["paired"] = "sub-{:03}".format(int(df_subjects
                                                   .loc[index, "cnt"]))
     else:
-        values["group"] = "control"
-        values["paired"] = "sub-{:03}".format(int(df_subjects
+        session.sub_values["group"] = "control"
+        session.sub_values["paired"] = "sub-{:03}".format(int(df_subjects
                                                   .loc[index, "pat"]))
 
     # looking for order of sessions
@@ -121,46 +116,33 @@ def SubjectEP(session: BidsSession) -> int:
         v = "ses-" + str(df_subjects.loc[index, prefix + s]).strip()
         ses = "ses" + s
         if v == "ses-nan":
-            values[ses] = ""
+            session.sub_values[ses] = ""
             logger.warning("Subject {}({}): missing {} value"
-                           .format(values["participant_id"],
-                                   values["group"],
+                           .format(session.sub_values["participant_id"],
+                                   session.sub_values["group"],
                                    ses)
                            )
         elif v not in Series:
             logger.critical("Subject {}({}): Invalid {}: {}"
-                            .format(values["participant_id"],
-                                    values["group"],
+                            .format(session.sub_values["participant_id"],
+                                    session.sub_values["group"],
                                     ses,
-                                    values[ses])
+                                    session.sub_values[ses])
                             )
             raise KeyError("Invalid {}: {}"
                            .format(ses, v))
         else:
-            values[ses] = v
-            scans_map[scans_order[ind]] = values[ses]
+            session.sub_values[ses] = v
+            scans_map[scans_order[ind]] = session.sub_values[ses]
 
     # checking if all scans are identifyable
     for scan in scans_order:
         if scan not in scans_map:
             logger.error("Subject {}({}): Can't identify session {}"
-                         .format(values["participant_id"],
-                                 values["group"],
+                         .format(session.sub_values["participant_id"],
+                                 session.sub_values["group"],
                                  scan))
             scans_map[scan] = scan
-
-    # creating tsv file
-    tsv_file = os.path.join(bidsfolder, "participants.tsv")
-    if not os.path.isfile(tsv_file):
-        with open(tsv_file, 'w') as f:
-            f.write(sub_columns.GetHeader())
-            f.write("\n")
-    with open(os.path.join(bidsfolder, "participants.tsv"), "a") as f:
-        f.write(sub_columns.GetLine(values))
-        f.write("\n")
-    model_participants = os.path.join(bidsfolder, "participants.json")
-    if not os.path.isfile(model_participants):
-        sub_columns.DumpDefinitions(model_participants)
 
     session.subject = "sub-" + session.subject
     return 0
@@ -173,8 +155,9 @@ def SessionEP(session: BidsSession) -> int:
 
 
 def SessionEndEP(session: BidsSession):
-    out_path = os.path.join(bidsfolder,
-                            session.getPath(True),
+    path = os.path.join(bidsfolder,
+                        session.getPath(True))
+    out_path = os.path.join(path,
                             "MRI")
     if not checkSeries(out_path,
                        session.subject, session.session,
@@ -186,7 +169,7 @@ def SessionEndEP(session: BidsSession):
         return 0
 
     logs = os.path.join(session.in_path, "inp")
-    aux_d = os.path.join(out_path, "aux")
+    aux_d = os.path.join(path, "aux")
     if not os.path.isdir(logs):
         raise NotADirectoryError(logs)
 
