@@ -39,10 +39,10 @@ def SessionEP(scan):
     sid = -1
     checkSeries(path, sub, ses, False)
     # copytng behevioral data
-    aux_input = os.path.join(rawfolder, sub, ses, "aux")
+    aux_input = os.path.join(rawfolder, sub, ses, "auxiliary")
     if ses in ("ses-LCL", "ses-HCL"):
         if not os.path.isdir(aux_input):
-            logger.error("Session {}/{} do not contain aux folder"
+            logger.error("Session {}/{} do not contain auxiliary folder"
                          .format(sub, ses))
             raise FileNotFoundError("folder {} not found"
                                     .format(aux_input))

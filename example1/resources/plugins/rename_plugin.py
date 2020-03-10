@@ -159,17 +159,16 @@ def SessionEndEP(session: BidsSession):
                         session.getPath(True))
     out_path = os.path.join(path,
                             "MRI")
-    if not checkSeries(out_path,
-                       session.subject, session.session,
-                       False):
-        return 1
+    checkSeries(out_path,
+                session.subject, session.session,
+                False)
 
     # parcing log files
     if session.session == "ses-STROOP":
         return 0
 
     logs = os.path.join(session.in_path, "inp")
-    aux_d = os.path.join(path, "aux")
+    aux_d = os.path.join(path, "auxiliary")
     if not os.path.isdir(logs):
         raise NotADirectoryError(logs)
 
