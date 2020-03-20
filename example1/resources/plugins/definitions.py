@@ -1,8 +1,20 @@
 import logging
 import os
 
+
+# defined this way, log messages will be formatted correctly
+# and appear with this file-name
 logger = logging.getLogger(__name__)
 
+# path to the root folder of plugin 
+# (bidscoin_example/example1/resources)
+# usefull to retrieve auxiliary files
+plugin_root = os.path.normpath(
+        os.path.join(os.path.dirname(__file__), ".."))
+
+# definition of correct session names and sequences
+# usefull to check the completness and/or correct emplacement
+# of scans
 Series = {
         "ses-LCL": ('localizer',
                     'cmrr_mbep2d_bold_mb2_invertpe', 
