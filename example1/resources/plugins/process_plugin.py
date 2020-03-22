@@ -7,44 +7,101 @@ from definitions import checkSeries, plugin_root
 
 logger = logging.getLogger(__name__)
 
-# global variables
-rawfolder = ""
-bidsfolder = ""
+#############################
+# global bidscoin variables #
+#############################
+
+# Folder with prepared dataset
+preparedfolder = None
+# folder with bidsified dataset
+bidsfolder = None
+# switch if is a dry-run (test run)
 dry_run = False
 
-participants_table = None
-rec_path = ""
-countSeries = {}
+
+#####################
+# Session variables #
+#####################
+
+# list of sequences in current session
+# used to identify fMRI and MPM MRI images
+series = list()
+
+#####################
+# Sequence variable #
+#####################
+
+# The id of current sequence
+sid = -1
+
+# Identified tag for fMRI and MPM MRI
+Intended = ""
 
 
 def InitEP(source: str, destination: str, dry: bool) -> int:
-    global rawfolder
+    """
+    Initialisation of plugin
+
+    1. Saves source/destination folders and dry_run switch
+
+    Parameters
+    ----------
+    source: str
+        path to source dataset
+    destination:
+        path to prepared dataset
+    """
+    global preparedfolder
     global bidsfolder
     global dry_run
 
-    rawfolder = source
+    preparedfolder = source
     bidsfolder = destination
     dry_run = dry
 
 
 def SubjectEP(scan):
+    """
+    Subject modification
+
+    1. Fills the handiness value for subject
+    """
+
+    # values in scan.sub_values are pre-filled
+    # from participants.tsv file, no need to refill them.
+    # If needed to remove value from participants, you
+    # can set it to None
     scan.sub_values["handiness"] = random.choice([0, 1])
 
 
 def SessionEP(scan):
+    """
+    Session files modifications
+
+    1. Stores the list of sequences in the session
+    2. Checks if session contains correct sequences
+    2. Checks if session HCL and LCL contains task and
+    KSS/VAS files
+    """
+
+    ######################################
+    # Initialisation of sesion variables #
+    ######################################
     global series
     global sid
     sub = scan.subject
     ses = scan.session
-    path = os.path.join(rawfolder,
-                        sub, ses,
-                        "MRI")
+    path = os.path.join(scan.in_path, "MRI")
     series = sorted(os.listdir(path))
     series = [s.split("-", 1)[1] for s in series]
     sid = -1
     checkSeries(path, sub, ses, False)
-    # copytng behevioral data
-    aux_input = os.path.join(rawfolder, sub, ses, "auxiliary")
+
+
+    #############################################
+    # Checking for existance of auxiliary files #
+    #############################################
+    aux_input = os.path.join(session.in_path, "auxiliary")
     if ses in ("ses-LCL", "ses-HCL"):
         if not os.path.isdir(aux_input):
             logger.error("Session {}/{} do not contain auxiliary folder"
@@ -60,12 +117,10 @@ def SessionEP(scan):
                              .format(sub, ses, source))
 
 
-series = list()
-sid = -1
-Intended = ""
-
-
 def SequenceEP(recording):
+    """
+    Sequence identification
+    """
     global series
     global sid
     global Intended
