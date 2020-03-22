@@ -1,6 +1,7 @@
 import os
 import shutil
 import logging
+import random
 
 from definitions import checkSeries
 
@@ -26,27 +27,35 @@ def InitEP(source: str, destination: str, dry: bool) -> int:
     dry_run = dry
 
 
+def SubjectEP(scan):
+    sub_id = int(scan.subject[4:])
+    scan.subject = "sub-{:03d}".format(sub_id + 1)
+    scan.sub_values["sex"] = None
+    scan.sub_values["random"] = random.random()
+
+
 def SessionEP(scan):
     global series
     global sid
     sub = scan.subject
     ses = scan.session
-    path = os.path.join(rawfolder,
-                        sub, ses,
-                        "MRI")
+    # path = os.path.join(rawfolder,
+    #                     sub, ses,
+    #                     "MRI")
+    path = os.path.join(scan.in_path, "MRI")
     series = sorted(os.listdir(path))
-    series = [s.split("-",1)[1] for s in series]
+    series = [s.split("-", 1)[1] for s in series]
     sid = -1
     checkSeries(path, sub, ses, False)
     # copytng behevioral data
-    aux_input = os.path.join(rawfolder, sub, ses, "auxiliary")
+    aux_input = os.path.join(scan.in_path, "auxiliary")
     if ses in ("ses-LCL", "ses-HCL"):
         if not os.path.isdir(aux_input):
             logger.error("Session {}/{} do not contain auxiliary folder"
                          .format(sub, ses))
             raise FileNotFoundError("folder {} not found"
                                     .format(aux_input))
-        beh = os.path.join(bidsfolder, sub, ses, "beh")
+        beh = os.path.join(scan.in_path, "beh")
         if not dry_run:
             os.makedirs(beh, exist_ok=True)
         for old, new in (("FCsepNBack.tsv", "task-rest_events.tsv"),
@@ -81,7 +90,7 @@ def SequenceEP(recording):
     global Intended
     Intended = ""
     sid += 1
-    recid = series[sid] 
+    recid = series[sid]
     if recid != recording.recId():
         logger.warning("{}: Id mismatch folder {}"
                        .format(recording.recIdentity(False),
