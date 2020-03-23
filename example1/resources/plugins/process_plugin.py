@@ -5,6 +5,9 @@ import random
 
 from definitions import checkSeries, plugin_root
 
+
+# defining logger this way will prefix plugin messages
+# with plugin name
 logger = logging.getLogger(__name__)
 
 #############################
@@ -23,19 +26,25 @@ dry_run = False
 # Session variables #
 #####################
 
-# list of sequences in current session
-# used to identify fMRI and MPM MRI images
-series = list()
+# Some sequences within session (namely fMRI and MPM structural) follows same
+# protocol, thus it is impossible to identify them only using
+# metadata
+# we will identify them by order they appear in session
+
+# list of sequences in order of acquisition in current session
+seq_list = list()
+
 
 #####################
 # Sequence variable #
 #####################
 
-# The id of current sequence
-sid = -1
+# The index of current sequence, corresponds to order in the sequence list
+seq_index = -1
 
 # Identified tag for fMRI and MPM MRI
-Intended = ""
+# This tag will override "SeriesDescription" DICOM tag
+IntendedFor = ""
 
 
 def InitEP(source: str, destination: str, dry: bool) -> int:
@@ -87,25 +96,27 @@ def SessionEP(scan):
     ######################################
     # Initialisation of sesion variables #
     ######################################
-    global series
-    global sid
-    sub = scan.subject
-    ses = scan.session
+    # retrieving list of sequences and puttintg them into list
+    global seq_list
+    global seq_index
     path = os.path.join(scan.in_path, "MRI")
-    series = sorted(os.listdir(path))
-    series = [s.split("-", 1)[1] for s in series]
-    sid = -1
-    checkSeries(path, sub, ses, False)
+    seq_list = sorted(os.listdir(path))
+    seq_list = [s.split("-", 1)[1] for s in seq_list]
+    seq_index = -1
 
+    #################################
+    # Checking sequences in session #
+    #################################
+    checkSeries(path, scan.subject, scan.session, False)
 
     #############################################
     # Checking for existance of auxiliary files #
     #############################################
-    aux_input = os.path.join(session.in_path, "auxiliary")
-    if ses in ("ses-LCL", "ses-HCL"):
+    aux_input = os.path.join(scan.in_path, "auxiliary")
+    if scan.session in ("ses-LCL", "ses-HCL"):
         if not os.path.isdir(aux_input):
             logger.error("Session {}/{} do not contain auxiliary folder"
-                         .format(sub, ses))
+                         .format(scan.subject, scan.session))
             return -1
         for old, new in (("FCsepNBack.tsv", "task-rest_events.tsv"),
                          ("FCsepNBack.json", "task-rest_events.json"),
@@ -114,76 +125,89 @@ def SessionEP(scan):
             source = "{}/{}".format(aux_input, old)
             if not os.path.isfile(source):
                 logger.error("{}/{}: File {} not found"
-                             .format(sub, ses, source))
+                             .format(scan.subject, scan.session, source))
 
 
 def SequenceEP(recording):
     """
     Sequence identification
     """
-    global series
-    global sid
-    global Intended
-    Intended = ""
-    sid += 1
-    recid = series[sid]
+
+    global seq_index
+    global IntendedFor
+    IntendedFor = ""
+    seq_index += 1
+    recid = seq_list[seq_index]
+
+    # checking if current sequence corresponds in correct place in list
     if recid != recording.recId():
         logger.warning("{}: Id mismatch folder {}"
                        .format(recording.recIdentity(False),
                                recid))
+
+    # The inverted fMRI are taken just before normal fMRI
+    # looking into the following sequence will identify
+    # the current one
     if recid == "cmrr_mbep2d_bold_mb2_invertpe":
-        mod = series[sid + 1]
+        mod = seq_list[seq_index + 1]
         if mod.endswith("cmrr_mbep2d_bold_mb2_task_fat"):
-            Intended = "nBack"
+            IntendedFor = "nBack"
         elif mod.endswith("cmrr_mbep2d_bold_mb2_task_nfat"):
-            Intended = "nBack"
+            IntendedFor = "nBack"
         elif mod.endswith("cmrr_mbep2d_bold_mb2_rest"):
-            Intended = "rest"
+            IntendedFor = "rest"
         else:
-            Intended = "invalid"
+            IntendedFor = "invalid"
             logger.warning("{}: Unknown session {}"
                            .format(recording.recIdentity(),
                                    mod))
+    # fmap images are taken for HCL, LCL and MPM (STROOP)
+    # sessions
     elif recid == "gre_field_mapping":
         if recording.sesId() in ("ses-HCL", "ses-LCL"):
-            Intended = "HCL/LCL"
+            IntendedFor = "HCL/LCL"
         elif recording.sesId() == "ses-STROOP":
-            Intended = "STROOP"
+            IntendedFor = "STROOP"
         else:
             logger.warning("{}: Unknown session {}"
                            .format(recording.recIdentity(),
                                    recording.sesId()))
-            Intended = "invalid"
+            IntendedFor = "invalid"
+    # fmaps sesnsBody and sesnArray are taken just before
+    # structural PD , T1 and MT. Looking into next sequences
+    # will allow the identification
     elif recid == "al_mtflash3d_sensArray":
-        det = series[sid + 2]
+        det = seq_list[seq_index + 2]
         if det.endswith("al_mtflash3d_PDw"):
-            Intended = "PDw"
+            IntendedFor = "PDw"
         elif det.endswith("al_mtflash3d_T1w"):
-            Intended = "T1w"
-            recording.setAttribute("Intended", "T1w")
+            IntendedFor = "T1w"
         elif det.endswith("al_mtflash3d_MTw"):
-            Intended = "MTw"
+            IntendedFor = "MTw"
         else:
             logger.warning("{}: Unable determine modality"
                            .format(recording.recIdentity()))
-            Intended = "invalid"
+            IntendedFor = "invalid"
     elif recid == "al_mtflash3d_sensBody":
-        det = series[sid + 1]
+        det = seq_list[seq_index + 1]
         if det.endswith("al_mtflash3d_PDw"):
-            Intended = "PDw"
+            IntendedFor = "PDw"
         elif det.endswith("al_mtflash3d_T1w"):
-            Intended = "T1w"
+            IntendedFor = "T1w"
         elif det.endswith("al_mtflash3d_MTw"):
-            Intended = "MTw"
+            IntendedFor = "MTw"
         else:
             logger.warning("{}: Unable determine modality"
                            .format(recording.recIdentity()))
-            Intended = "invalid"
+            IntendedFor = "invalid"
 
 
 def RecordingEP(recording):
-    if Intended != "":
-        recording.setAttribute("SeriesDescription", Intended)
+    """
+    Setting "SeriesDescription" tag for given recording.
+    """
+    if IntendedFor != "":
+        recording.setAttribute("SeriesDescription", IntendedFor)
 
 
 def SequenceEndEP(outfolder, recording):
@@ -192,6 +216,7 @@ def SequenceEndEP(outfolder, recording):
     """
     modality = recording.Modality()
 
+    # only for fMRI and diffusion images
     if modality not in ("func", "dwi"):
         return
 
@@ -201,8 +226,11 @@ def SequenceEndEP(outfolder, recording):
                     .format(recording.recIdentity(index=False),
                             modality))
         first_file = os.path.join(outfolder, recording.files[0])
+        # "convertion" is just copy of first file in sequence
+        # in real application a real external tool should be used
         shutil.copy2(first_file, f4D + ".nii")
         first_file = os.path.splitext(first_file)[0] + ".json"
+        # copying the first file json to allow the identification
         shutil.copy2(first_file, f4D + ".json")
 
         # copying fake bval and bvec values
@@ -219,6 +247,8 @@ def SequenceEndEP(outfolder, recording):
                                       "NODDI.bvec"),
                          os.path.join(outfolder,
                                       "4D.bvec"))
+
+        # Removing now obsolete files
         for f_nii in recording.files:
             f_nii = os.path.join(outfolder, f_nii)
             f_json = os.path.splitext(f_nii)[0] + ".json"

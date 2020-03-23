@@ -6,7 +6,7 @@ import os
 # and appear with this file-name
 logger = logging.getLogger(__name__)
 
-# path to the root folder of plugin 
+# path to the root folder of plugin
 # (bidscoin_example/example1/resources)
 # usefull to retrieve auxiliary files
 plugin_root = os.path.normpath(
@@ -17,9 +17,9 @@ plugin_root = os.path.normpath(
 # of scans
 Series = {
         "ses-LCL": ('localizer',
-                    'cmrr_mbep2d_bold_mb2_invertpe', 
-                    'cmrr_mbep2d_bold_mb2_task_nfat', 
-                    'cmrr_mbep2d_bold_mb2_invertpe', 
+                    'cmrr_mbep2d_bold_mb2_invertpe',
+                    'cmrr_mbep2d_bold_mb2_task_nfat',
+                    'cmrr_mbep2d_bold_mb2_invertpe',
                     'cmrr_mbep2d_bold_mb2_rest',
                     'gre_field_mapping',
                     'gre_field_mapping',
@@ -68,7 +68,7 @@ def checkSeries(path: str,
                 subject: str, session: str,
                 critical: bool) -> bool:
     """
-    Retrieve list of series from path and checks 
+    Retrieve list of series from path and checks
     its compatibility with defined list
 
     Parameters:
@@ -80,7 +80,7 @@ def checkSeries(path: str,
     session: str
         Name of session to check
     critical: bool
-        If True, mismatches will creeate exceptions 
+        If True, mismatches will creeate exceptions
         and critical level log entries
     """
     if session not in Series:
@@ -89,7 +89,7 @@ def checkSeries(path: str,
         return False
     passed = True
     series = sorted(os.listdir(path))
-    series = [s.split("-",1)[1] for s in series]
+    series = [s.split("-", 1)[1] for s in series]
     for ind, s in enumerate(series):
         if s not in Series[session]:
             msg = "{}/{}: Invalid serie {}".format(subject, session, s)
@@ -139,9 +139,9 @@ def checkSeries(path: str,
     return passed
 
 
-def reportError(msg: str, critical: bool, error: type=ValueError) -> None:
+def reportError(msg: str, critical: bool, error: type = ValueError) -> None:
     """
-    reports error. 
+    reports error.
     If critical, an exception of type error will raise
 
     Parametres:
@@ -155,6 +155,6 @@ def reportError(msg: str, critical: bool, error: type=ValueError) -> None:
     """
     if critical:
         logger.critical(msg)
-        raise exception(msg)
+        raise Exception(msg)
     else:
         logger.error(msg)

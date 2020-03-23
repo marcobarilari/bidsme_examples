@@ -1,5 +1,5 @@
 Options:
-  version: 2.3.1
+  version: 2.3.0
   bidsignore: []
 PlugIns:
   path: resources/plugins/bidsify_plugin.py
