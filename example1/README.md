@@ -19,11 +19,6 @@
   - [Data processing](#run_proc)
   - [Data bidsification](#run_bids)
 	
-Task results are formatted following [bids](https://bids-specification.readthedocs.io/en/stable/04-modality-specific-files/05-task-events.html),
-and stored in `source/<subject>/<session>/nii/FCsepNBack.tsv` file.
-
-The results are formatted following [bids](https://bids-specification.readthedocs.io/en/stable/03-modality-agnostic-files.html#phenotypic-and-assessment-data),
-and stored in `source/<subject>/<session>/nii/VAS.tsv`
 
 ## <a name="intro"></a> Introduction
 
