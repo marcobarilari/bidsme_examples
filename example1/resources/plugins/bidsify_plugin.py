@@ -80,12 +80,14 @@ def SubjectEP(scan):
 
     # This will demonstrate the subject renaming
     # namely increasing the id by 1
+    """
     sub_id = int(scan.subject[4:])
     scan.subject = "sub-{:03d}".format(sub_id + 1)
     # changing also in participant.tsv file
     if scan.sub_values["paired"]:
         pair_id = int(scan.sub_values["paired"][4:])
         scan.sub_values["paired"] = "sub-{:03d}".format(pair_id + 1)
+    """
 
     #################################
     # Subject metadata manipulation #
