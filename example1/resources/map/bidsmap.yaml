@@ -40,15 +40,10 @@ MRI:
           - echo: ~
         json: !!omap
           - TaskName: <<bids:task>>
-          - Instructions: ""
-          - TaskDescription: ""
-          - CogAtlasID: ""
-          - CogPOID: ""
           - RepetitionTime: <time3:RepetitionTime>
-          - NumberOfVolumesDiscardedByScanner: ""
-          - NumberOfVolumesDiscardedByUser: ""
+          - NumberOfVolumesDiscardedByScanner: 0
+          - NumberOfVolumesDiscardedByUser: 0
           - DelayTime: 0
-          - DelayAfterTrigger: ""
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/006-cmrr_mbep2d_bold_mb2_invertpe/f1904-0006-00001-000001-01.nii
         example: func/sub-003_ses-HCL_task-rest_dir-PA_run-1_bold
         checked: true
@@ -67,15 +62,10 @@ MRI:
           - echo: ~
         json: !!omap
           - TaskName: <<bids:task>>
-          - Instructions: ""
-          - TaskDescription: ""
-          - CogAtlasID: ""
-          - CogPOID: ""
           - RepetitionTime: <time3:RepetitionTime>
-          - NumberOfVolumesDiscardedByScanner: ""
-          - NumberOfVolumesDiscardedByUser: ""
+          - NumberOfVolumesDiscardedByScanner: 0
+          - NumberOfVolumesDiscardedByUser: 0
           - DelayTime: 0
-          - DelayAfterTrigger: ""
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/004-cmrr_mbep2d_bold_mb2_task_fat/f1904-0004-00001-000001-01.nii
         example: func/sub-003_ses-HCL_task-nBack_dir-AP_run-1_bold
         checked: true
@@ -93,15 +83,10 @@ MRI:
           - echo: ~
         json: !!omap
           - TaskName: <<bids:task>>
-          - Instructions: ""
-          - TaskDescription: ""
-          - CogAtlasID: ""
-          - CogPOID: ""
           - RepetitionTime: <time3:RepetitionTime>
-          - NumberOfVolumesDiscardedByScanner: ""
-          - NumberOfVolumesDiscardedByUser: ""
+          - NumberOfVolumesDiscardedByScanner: 0
+          - NumberOfVolumesDiscardedByUser: 0
           - DelayTime: 0
-          - DelayAfterTrigger: ""
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/008-cmrr_mbep2d_bold_mb2_rest/f1904-0008-00001-000001-01.nii
         example: func/sub-003_ses-HCL_task-rest_dir-AP_run-1_bold
         checked: true
@@ -119,15 +104,10 @@ MRI:
           - echo: ~
         json: !!omap
           - TaskName: <<bids:task>>
-          - Instructions: ""
-          - TaskDescription: ""
-          - CogAtlasID: ""
-          - CogPOID: ""
           - RepetitionTime: <time3:RepetitionTime>
-          - NumberOfVolumesDiscardedByScanner: ""
-          - NumberOfVolumesDiscardedByUser: ""
+          - NumberOfVolumesDiscardedByScanner: 0
+          - NumberOfVolumesDiscardedByUser: 0
           - DelayTime: 0
-          - DelayAfterTrigger: ""
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-LCL/MRI/004-cmrr_mbep2d_bold_mb2_task_nfat/f1894-0004-00001-000001-01.nii
         example: func/sub-003_ses-LCL_task-nBack_dir-AP_run-1_bold
         checked: true
@@ -145,15 +125,10 @@ MRI:
           - echo: ~
         json: !!omap
           - TaskName: <<bids:task>>
-          - Instructions: ""
-          - TaskDescription: ""
-          - CogAtlasID: ""
-          - CogPOID: ""
           - RepetitionTime: <time3:RepetitionTime>
-          - NumberOfVolumesDiscardedByScanner: ""
-          - NumberOfVolumesDiscardedByUser: ""
+          - NumberOfVolumesDiscardedByScanner: 0
+          - NumberOfVolumesDiscardedByUser: 0
           - DelayTime: 0
-          - DelayAfterTrigger: ""
     fmap:
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/010-gre_field_mapping/s1904-0010-00001-000001-01.nii
         example: fmap/sub-003_ses-HCL_magnitude1
@@ -374,8 +349,7 @@ MRI:
           - rec: ~
           - run: ~
           - mod: ~
-        json: !!omap
-          - ContrastBolusIngredient: ~
+        json: !!omap []
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-LCL/MRI/013-t2_spc_da-fl_sag_p2_iso/s1894-0013-00001-000192-01.nii
         example: anat/sub-003_ses-LCL_FLAIR
         checked: true
@@ -388,8 +362,7 @@ MRI:
           - rec: ~
           - run: ~
           - mod: ~
-        json: !!omap
-          - ContrastBolusIngredient: ~
+        json: !!omap []
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/004-al_mtflash3d_PDw/s1905-0004-00001-000176-01.nii
         example: anat/sub-003_ses-STROOP_acq-PDw_part-mag_echo-1_MPM
         checked: true
@@ -407,7 +380,6 @@ MRI:
           - mod: ~
         json: !!omap
           - MTState: "Off"
-          - ContrastBolusIngredient: ~
           - EchoTime: <time3:EchoTime>
           - RepetitionTime: <time3:RepetitionTime>
           - FlipAngle: <FlipAngle>
@@ -445,7 +417,6 @@ MRI:
           - mod: ~
         json: !!omap
           - MTState: "On"
-          - ContrastBolusIngredient: ~
           - EchoTime: <time3:EchoTime>
           - RepetitionTime: <time3:RepetitionTime>
           - FlipAngle: <FlipAngle>
@@ -466,7 +437,6 @@ MRI:
           - mod: ~
         json: !!omap
           - MTState: "Off"
-          - ContrastBolusIngredient: ~
           - EchoTime: <time3:EchoTime>
           - RepetitionTime: <time3:RepetitionTime>
           - FlipAngle: <FlipAngle>
@@ -504,7 +474,6 @@ MRI:
           - mod: ~
         json: !!omap
           - MTState: "On"
-          - ContrastBolusIngredient: ~
           - EchoTime: <time3:EchoTime>
           - RepetitionTime: <time3:RepetitionTime>
           - FlipAngle: <FlipAngle>
