@@ -23,7 +23,7 @@
 ## <a name="intro"></a> Introduction
 
 This dataset is a purely fictional, designed to demonstrate the core 
-features of `bidscoin` bidsifier tool. 
+features of `bidsme` bidsifier tool. 
 
 The structure of dataset is modelled of real-life dataset, currently unpublished.
 Several simplifications has been applied, conserving only the MRI images structure,
@@ -232,7 +232,7 @@ for bidsified `.tsv` files:
 - `participants.json` is a sidecar json file for `participant.tsv` file, containing list 
 of participants together with demographic information
   - alternative files `participants_add.json` and `participants_remove.json` are used for
-demonstration of participant table manipulations by `bidscoin`
+demonstration of participant table manipulations by `bidsme`
 - `FCsepNBack.json` is sidecar json file for task table
 - `VAS.json` is sidecar json file for VAS
 
@@ -260,11 +260,11 @@ Generated bidsmap files, that can be used to bidsify this dataset are placed in 
 - `bidsmap.yaml` must be used together with plugins
 - `bidsmap_noPlugin.yaml` can be used without plugins
 
-These files can be used with `-b` option directly, or copied into `bids/code/bidscoin` directory.
+These files can be used with `-b` option directly, or copied into `bids/code/bidsme` directory.
 
 #### <a name="ds_bids_plug"></a>Plugins
 
-The plugins are stored in `resources/plugins` directory, and contains commented example of additional data management provided by `bidscoin` infrastructure.
+The plugins are stored in `resources/plugins` directory, and contains commented example of additional data management provided by `bidsme` infrastructure.
 
 - `definitions.py` contains some common functions used by plugin and list of sessions and protocols used to check dataset validity
 - `rename_plugin.py` retrieves the demographic data and sessions names from `Appariement.xlsx`bookkeeping file
@@ -286,10 +286,10 @@ In this step, a generic user-defined dataset is organized in a standardized way.
 To run data preparation, it will be enough to run from `example1` directory
 
 ```python
-python3 bidscoin.py prepare --part-template resources/participants.json --recfolder nii=MRI --plugin resources/plugins/rename_plugin.py source/ renamed/
+python3 bidsme.py prepare --part-template resources/participants.json --recfolder nii=MRI --plugin resources/plugins/rename_plugin.py source/ renamed/
 ```
 
-The options `--part-template resources/participants.json` will tell bidscoin to use participant json file as template for `participants.tsv` file. 
+The options `--part-template resources/participants.json` will tell bidsme to use participant json file as template for `participants.tsv` file. 
 The column `participant_id` will be filled automatically, while other columns will be filled 
 by default by `n/a`, unless they are set in plugin:
 
@@ -299,16 +299,16 @@ session.sub_values["sex"] = "M"
 
 Without `--part-template` option the only column in participants file will be `participant_id`.
 
-Option `--recfolder nii=MRI` will tell to `bidscoin` that image files are MRI and stored in `nii` folder. 
-Without this option `bidscoin` will be unable to find image files.
+Option `--recfolder nii=MRI` will tell to `bidsme` that image files are MRI and stored in `nii` folder. 
+Without this option `bidsme` will be unable to find image files.
 
-Option `--plugin resources/plugins/rename-plugin.py` will tell to bidscoin to load corresponding plugin.
+Option `--plugin resources/plugins/rename-plugin.py` will tell to bidsme to load corresponding plugin.
 
-Parameters `source/` and `renamed/` tells to bidscoin where to search for source dataset and where place prepared dataset.
+Parameters `source/` and `renamed/` tells to bidsme where to search for source dataset and where place prepared dataset.
 
 After the execution of preparation, the `rename` folder should contain folders and files:
 
-- **code/bidscoin**, with log files of the last execution of preparation step
+- **code/bidsme**, with log files of the last execution of preparation step
 - **participants.tsv** and **participants.json** files with formatted and filled participant list, all columns for all subjects must be filled except `handiness`, which should contain only `n/a`
 - **sub-00X** folders for subjects 1-4
   - **ses-HCL** sub-folders with bidsified session name (either `ses-HCL`, if run with plugin, of `ses-s01905` if run without plugin)
@@ -319,17 +319,17 @@ After the execution of preparation, the `rename` folder should contain folders a
 This is prepared dataset, and can be modified freely at condition to conserve general structure.
 For example the participant table can be corrected if contain wrong or missing values.
 
-Running bidscoin with all options can be tedious. To streamline the experience, the majority of options can be saved in configuration file by running 
+Running bidsme with all options can be tedious. To streamline the experience, the majority of options can be saved in configuration file by running 
 
 ```python
-python3 bidscoin.py -c conf.yamel --conf-save prepare <options> source/ renamed/
+python3 bidsme.py -c conf.yamel --conf-save prepare <options> source/ renamed/
 ```
 
 This will create a local `conf.yamel` file with passed options. 
 To load the configuration:
 
 ```python
-python3 bidscoin.py -c conf.yamel prepare source/ renamed/
+python3 bidsme.py -c conf.yamel prepare source/ renamed/
 ```
 
 Passing other options and using switch `--conf-save` will update configuration file.
@@ -340,7 +340,7 @@ Passing other options and using switch `--conf-save` will update configuration f
 Bidsmap is created/tested with `map` command:
 
 ```python
-python3 bidscoin.py map --plugin resources/plugins/bidsify_plugin.py --template bidsmap_template.yaml renamed/ bids/
+python3 bidsme.py map --plugin resources/plugins/bidsify_plugin.py --template bidsmap_template.yaml renamed/ bids/
 ```
 
 The option `--plugin resources/plugins/bidsify_plugin.py` will load correspondent plugin (the used plugin is the same as for bidsification to ensure that all modifications needed to 
@@ -353,10 +353,10 @@ The `bidsmap_template.yaml` works with example dataset, but for real data a diff
 The parameters `renamed/` and `bids/` tells where prepared dataset is stored and where the bidsified dataset will be placed.
 
 First execution of `map` usually results into huge amount of warnings and occasional errors.
-These warnings and errors must be corrected. The details of various warnings and corrections to apply can be found in `bidscoin` documentation. 
+These warnings and errors must be corrected. The details of various warnings and corrections to apply can be found in `bidsme` documentation. 
 
 The working bidsmap can be found in `resources/map` directory. 
-If placed in `bids/code/bidscoin/` directory, the `map` should not produce any warnings. 
+If placed in `bids/code/bidsme/` directory, the `map` should not produce any warnings. 
 
 
 
@@ -372,7 +372,7 @@ For example `resources/plugins/process_plugin.py` fills the `nandiness` column, 
 fMRI and diffusion images in single 4D image.
 
 ```python
-python3 bidscoin.py process --plugin resources/plugins/process_plugin.py renamed/ bids/
+python3 bidsme.py process --plugin resources/plugins/process_plugin.py renamed/ bids/
 ```
 
 After running, the column `handiness` must be filled and fMRI files 
@@ -380,7 +380,7 @@ After running, the column `handiness` must be filled and fMRI files
 must be merged in one file.
 
 This step can be easily replaced by any custom script and/or pipeline. The only advantage
-is some `bids` and `bidscoin` specific checks and recording identification.
+is some `bids` and `bidsme` specific checks and recording identification.
 
 
 ### <a name="run_bids"></a>Bidsification step
@@ -388,7 +388,7 @@ is some `bids` and `bidscoin` specific checks and recording identification.
 The final step is bidsification, it is run with `bidsify` command:
 
 ```python
-python3 bidscoin.py map --plugin resources/plugins/bidsify_plugin.py renamed/ bids/
+python3 bidsme.py map --plugin resources/plugins/bidsify_plugin.py renamed/ bids/
 ```
 
 The `--plugin resources/plugins/bidsify_plugin.py` option loads an
@@ -400,7 +400,7 @@ The bidsified dataset should be found in `bids/` folder and should be
 fully bids complaint, including the participant and scans json sidecar
 files and json files with exported scans meta-data.
 
-`bidscoin` offer the possibility to rename subjects during bidsification.
+`bidsme` offer the possibility to rename subjects during bidsification.
 To do so, it will be enough to change value of `scan.subject` in
 `ParticipantEP` function, as demonstrated in 
 `plugin resources/plugins/bidsify_plugin.py` file on lines 85--89.
