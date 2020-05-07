@@ -279,6 +279,9 @@ An optional data-processing step can be inserted between preparation and bidsifi
 
 A one-time step of bidsmap creation may be necessary.
 
+> Important: in order to run the examples, an additional package `xlrd` is needed. It allow
+to parce excel files, like the `Apparaiment.xls`
+
 ### <a name="run_prep"></a>Data preparation
 
 In this step, a generic user-defined dataset is organized in a standardized way.
