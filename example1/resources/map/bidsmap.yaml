@@ -1,9 +1,4 @@
-Options:
-  version: 2.3.0
-  bidsignore: []
-PlugIns:
-  path: resources/plugins/bidsify_plugin.py
-  options: {}
+__bids__: 1.2.0
 MRI:
   Nifti_SPM12:
     __ignore__:
@@ -40,7 +35,7 @@ MRI:
           - echo: ~
         json: !!omap
           - TaskName: <<bids:task>>
-          - RepetitionTime: <time3:RepetitionTime>
+          - RepetitionTime: <scale-3:RepetitionTime>
           - NumberOfVolumesDiscardedByScanner: 0
           - NumberOfVolumesDiscardedByUser: 0
           - DelayTime: 0
@@ -62,7 +57,7 @@ MRI:
           - echo: ~
         json: !!omap
           - TaskName: <<bids:task>>
-          - RepetitionTime: <time3:RepetitionTime>
+          - RepetitionTime: <scale-3:RepetitionTime>
           - NumberOfVolumesDiscardedByScanner: 0
           - NumberOfVolumesDiscardedByUser: 0
           - DelayTime: 0
@@ -83,7 +78,7 @@ MRI:
           - echo: ~
         json: !!omap
           - TaskName: <<bids:task>>
-          - RepetitionTime: <time3:RepetitionTime>
+          - RepetitionTime: <scale-3:RepetitionTime>
           - NumberOfVolumesDiscardedByScanner: 0
           - NumberOfVolumesDiscardedByUser: 0
           - DelayTime: 0
@@ -104,7 +99,7 @@ MRI:
           - echo: ~
         json: !!omap
           - TaskName: <<bids:task>>
-          - RepetitionTime: <time3:RepetitionTime>
+          - RepetitionTime: <scale-3:RepetitionTime>
           - NumberOfVolumesDiscardedByScanner: 0
           - NumberOfVolumesDiscardedByUser: 0
           - DelayTime: 0
@@ -125,7 +120,7 @@ MRI:
           - echo: ~
         json: !!omap
           - TaskName: <<bids:task>>
-          - RepetitionTime: <time3:RepetitionTime>
+          - RepetitionTime: <scale-3:RepetitionTime>
           - NumberOfVolumesDiscardedByScanner: 0
           - NumberOfVolumesDiscardedByUser: 0
           - DelayTime: 0
@@ -144,7 +139,7 @@ MRI:
           - dir: ~
           - run: ~
         json: !!omap
-          - EchoTime: <time3:EchoTime>
+          - EchoTime: <scale-3:EchoTime>
           - IntendedFor:
               - "func/<<subject>>_<<session>>_task-nBack_bold.nii"
               - "func/<<subject>>_<<session>>_task-rest_bold.nii"
@@ -162,7 +157,7 @@ MRI:
           - dir: ~
           - run: ~
         json: !!omap
-          - EchoTime: <time3:EchoTime>
+          - EchoTime: <scale-3:EchoTime>
           - IntendedFor:
               - "anat/<<subject>>_<<session>>_acq-PDw_echo-*_MPM.nii"
               - "anat/<<subject>>_<<session>>_acq-MTw_echo-*_MPM.nii"
@@ -182,8 +177,8 @@ MRI:
           - run: ~
         json: !!omap
           - EchoTime: ~
-          - EchoTime1: <time6:CSASeriesHeaderInfo/MrPhoenixProtocol/alTE/0>
-          - EchoTime2: <time6:CSASeriesHeaderInfo/MrPhoenixProtocol/alTE/1>
+          - EchoTime1: <scale-6:CSASeriesHeaderInfo/MrPhoenixProtocol/alTE/0>
+          - EchoTime2: <scale-6:CSASeriesHeaderInfo/MrPhoenixProtocol/alTE/1>
           - IntendedFor:
               - "func/<<subject>>_<<session>>_task-nBack_bold.nii"
               - "func/<<subject>>_<<session>>_task-rest_bold.nii"
@@ -202,8 +197,8 @@ MRI:
           - run: ~
         json: !!omap
           - EchoTime: ~
-          - EchoTime1: <time6:CSASeriesHeaderInfo/MrPhoenixProtocol/alTE/0>
-          - EchoTime2: <time6:CSASeriesHeaderInfo/MrPhoenixProtocol/alTE/1>
+          - EchoTime1: <scale-6:CSASeriesHeaderInfo/MrPhoenixProtocol/alTE/0>
+          - EchoTime2: <scale-6:CSASeriesHeaderInfo/MrPhoenixProtocol/alTE/1>
           - IntendedFor:
               - "anat/<<subject>>_<<session>>_acq-PDw_echo-*_MPM.nii"
               - "anat/<<subject>>_<<session>>_acq-MTw_echo-*_MPM.nii"
@@ -219,7 +214,7 @@ MRI:
           - acq: HeadPDw
           - mod: ~
         json: !!omap
-          - EchoTime: <time3:EchoTime>
+          - EchoTime: <scale-3:EchoTime>
           - IntendedFor:
               - "anat/<<subject>>_<<session>>_acq-<<bids:mod>>_echo-*_MPM.nii"
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/003-al_mtflash3d_sensBody/s1905-0003-00001-000032-01.nii
@@ -233,7 +228,7 @@ MRI:
           - acq: BodyPDw
           - mod: ~
         json: !!omap
-          - EchoTime: <time3:EchoTime>
+          - EchoTime: <scale-3:EchoTime>
           - IntendedFor:
               - "anat/<<subject>>_<<session>>_acq-<<bids:mod>>_echo-*_MPM.nii"
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/014-al_B1mapping/s1905-0014-00001-000001-01.nii
@@ -246,7 +241,7 @@ MRI:
           - echo: <EchoNumbers>
           - fa: <AcquisitionNumber>
         json: !!omap
-          - EchoTime: <time3:EchoTime>
+          - EchoTime: <scale-3:EchoTime>
           - B1mapNominalFAValues: <B1mapNominalFAValues>
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/006-al_mtflash3d_sensArray/s1905-0006-00001-000032-01.nii
         example: fmap/sub-003_ses-STROOP_acq-HeadT1w_B1minus
@@ -259,7 +254,7 @@ MRI:
           - acq: HeadT1w
           - mod: ~
         json: !!omap
-          - EchoTime: <time3:EchoTime>
+          - EchoTime: <scale-3:EchoTime>
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/007-al_mtflash3d_sensBody/s1905-0007-00001-000032-01.nii
         example: fmap/sub-003_ses-STROOP_acq-BodyT1w_B1minus
         checked: true
@@ -273,7 +268,7 @@ MRI:
         json: !!omap
           - IntendedFor:
               - "anat/<<subject>>_<<session>>_acq-<<bids:mod>>_echo-*_MPM.nii"
-          - EchoTime: <time3:EchoTime>
+          - EchoTime: <scale-3:EchoTime>
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/010-al_mtflash3d_sensArray/s1905-0010-00001-000032-01.nii
         example: fmap/sub-003_ses-STROOP_acq-HeadMTw_B1minus
         checked: true
@@ -287,7 +282,7 @@ MRI:
         json: !!omap
           - IntendedFor:
               - "anat/<<subject>>_<<session>>_acq-<<bids:mod>>_echo-*_MPM.nii"
-          - EchoTime: <time3:EchoTime>
+          - EchoTime: <scale-3:EchoTime>
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/011-al_mtflash3d_sensBody/s1905-0011-00001-000032-01.nii
         example: fmap/sub-003_ses-STROOP_acq-BodyMTw_B1minus
         checked: true
@@ -301,7 +296,7 @@ MRI:
         json: !!omap
           - IntendedFor:
               - "anat/<<subject>>_<<session>>_acq-<<bids:mod>>_echo-*_MPM.nii"
-          - EchoTime: <time3:EchoTime>
+          - EchoTime: <scale-3:EchoTime>
     dwi:
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/012-cmrr_mbep2d_diff_NODDI_invertpe/s1904-0012-00001-000001-01.nii
         example: dwi/sub-003_ses-HCL_acq-RF_dir-PA_run-1_dwi
@@ -380,8 +375,8 @@ MRI:
           - mod: ~
         json: !!omap
           - MTState: "Off"
-          - EchoTime: <time3:EchoTime>
-          - RepetitionTime: <time3:RepetitionTime>
+          - EchoTime: <scale-3:EchoTime>
+          - RepetitionTime: <scale-3:RepetitionTime>
           - FlipAngle: <FlipAngle>
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/008-al_mtflash3d_T1w/s1905-0008-00001-000176-01.nii
         example: anat/sub-003_ses-STROOP_acq-T1w_part-mag_echo-1_MPM
@@ -417,8 +412,8 @@ MRI:
           - mod: ~
         json: !!omap
           - MTState: "On"
-          - EchoTime: <time3:EchoTime>
-          - RepetitionTime: <time3:RepetitionTime>
+          - EchoTime: <scale-3:EchoTime>
+          - RepetitionTime: <scale-3:RepetitionTime>
           - FlipAngle: <FlipAngle>
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/005-al_mtflash3d_PDw/s1905-0005-00001-000176-01.nii
         example: anat/sub-003_ses-STROOP_acq-PDw_part-phase_echo-1_MPM
@@ -437,8 +432,8 @@ MRI:
           - mod: ~
         json: !!omap
           - MTState: "Off"
-          - EchoTime: <time3:EchoTime>
-          - RepetitionTime: <time3:RepetitionTime>
+          - EchoTime: <scale-3:EchoTime>
+          - RepetitionTime: <scale-3:RepetitionTime>
           - FlipAngle: <FlipAngle>
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/009-al_mtflash3d_T1w/s1905-0009-00001-000176-01.nii
         example: anat/sub-003_ses-STROOP_acq-T1w_part-phase_echo-1_T1w
@@ -474,6 +469,6 @@ MRI:
           - mod: ~
         json: !!omap
           - MTState: "On"
-          - EchoTime: <time3:EchoTime>
-          - RepetitionTime: <time3:RepetitionTime>
+          - EchoTime: <scale-3:EchoTime>
+          - RepetitionTime: <scale-3:RepetitionTime>
           - FlipAngle: <FlipAngle>
