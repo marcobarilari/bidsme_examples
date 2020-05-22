@@ -1,6 +1,6 @@
 __bids__: 1.2.0
 MRI:
-  Nifti_SPM12:
+  hmriNIFTI:
     __ignore__:
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-HCL/MRI/001-localizer/s1904-0001-00001-000001-01.nii
         checked: true
@@ -463,3 +463,4 @@ MRI:
           - EchoTime: <scale-3:EchoTime>
           - RepetitionTime: <scale-3:RepetitionTime>
           - FlipAngle: <FlipAngle>
+EEG: {}
