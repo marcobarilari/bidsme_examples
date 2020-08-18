@@ -5,6 +5,10 @@ import random
 
 from definitions import checkSeries
 
+"""
+bidsify_plugin defines all nessesary functions to bidsify
+prepared dataset
+"""
 
 # defining logger this way will prefix plugin messages
 # with plugin name
@@ -41,10 +45,6 @@ seq_list = list()
 
 # The index of current sequence, corresponds to order in the sequence list
 seq_index = -1
-
-# Identified tag for fMRI and MPM MRI
-# This tag will override "SeriesDescription" DICOM tag
-IntendedFor = ""
 
 
 def InitEP(source: str, destination: str, dry: bool) -> int:
@@ -180,8 +180,12 @@ def SequenceEP(recording):
     Sequence identification
     """
     global seq_index
-    global IntendedFor
-    IntendedFor = ""
+
+    # recording.custom is a dictionary for user-defined variables
+    # that can be acessed from bidsmap
+    # they are initialized at new sequence, and conserved for all files
+    # within sequence, can be used to define sequence-global parameters
+    recording.custom["IntendedFor"] = ""
     seq_index += 1
     recid = seq_list[seq_index]
 
@@ -196,13 +200,13 @@ def SequenceEP(recording):
     if recid == "cmrr_mbep2d_bold_mb2_invertpe":
         mod = seq_list[seq_index + 1]
         if mod.endswith("cmrr_mbep2d_bold_mb2_task_fat"):
-            IntendedFor = "nBack"
+            recording.custom["IntendedFor"] = "nBack"
         elif mod.endswith("cmrr_mbep2d_bold_mb2_task_nfat"):
-            IntendedFor = "nBack"
+            recording.custom["IntendedFor"] = "nBack"
         elif mod.endswith("cmrr_mbep2d_bold_mb2_rest"):
-            IntendedFor = "rest"
+            recording.custom["IntendedFor"] = "rest"
         else:
-            IntendedFor = "invalid"
+            recording.custom["IntendedFor"] = "invalid"
             logger.warning("{}: Unknown session {}"
                            .format(recording.recIdentity(),
                                    mod))
@@ -210,43 +214,38 @@ def SequenceEP(recording):
     # sessions
     elif recid == "gre_field_mapping":
         if recording.sesId() in ("ses-HCL", "ses-LCL"):
-            IntendedFor = "HCL/LCL"
+            recording.custom["IntendedFor"] = "HCL/LCL"
         elif recording.sesId() == "ses-STROOP":
-            IntendedFor = "STROOP"
+            recording.custom["IntendedFor"] = "STROOP"
         else:
             logger.warning("{}: Unknown session {}"
                            .format(recording.recIdentity(),
                                    recording.sesId()))
-            IntendedFor = "invalid"
-    # fmaps sesnsBody and sesnArray are taken just before
+            recording.custom["IntendedFor"] = "invalid"
+    # fmaps sensBody and sensArray are taken just before
     # structural PD , T1 and MT. Looking into next sequences
     # will allow the identification
     elif recid == "al_mtflash3d_sensArray":
         det = seq_list[seq_index + 2]
         if det.endswith("al_mtflash3d_PDw"):
-            IntendedFor = "PDw"
+            recording.custom["IntendedFor"] = "PDw"
         elif det.endswith("al_mtflash3d_T1w"):
-            IntendedFor = "T1w"
+            recording.custom["IntendedFor"] = "T1w"
         elif det.endswith("al_mtflash3d_MTw"):
-            IntendedFor = "MTw"
+            recording.custom["IntendedFor"] = "MTw"
         else:
             logger.warning("{}: Unable determine modality"
                            .format(recording.recIdentity()))
-            IntendedFor = "invalid"
+            recording.custom["IntendedFor"] = "invalid"
     elif recid == "al_mtflash3d_sensBody":
         det = seq_list[seq_index + 1]
         if det.endswith("al_mtflash3d_PDw"):
-            IntendedFor = "PDw"
+            recording.custom["IntendedFor"] = "PDw"
         elif det.endswith("al_mtflash3d_T1w"):
-            IntendedFor = "T1w"
+            recording.custom["IntendedFor"] = "T1w"
         elif det.endswith("al_mtflash3d_MTw"):
-            IntendedFor = "MTw"
+            recording.custom["IntendedFor"] = "MTw"
         else:
             logger.warning("{}: Unable determine modality"
                            .format(recording.recIdentity()))
-            IntendedFor = "invalid"
-
-
-def RecordingEP(recording):
-    if IntendedFor != "":
-        recording.setAttribute("SeriesDescription", IntendedFor)
+            recording.custom["IntendedFor"] = "invalid"

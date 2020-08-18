@@ -13,7 +13,7 @@ MRI:
         checked: true
         suffix: ''
         attributes:
-          SeriesDescription: 'invalid'
+          <<custom:IntendedFor>>: 'invalid'
         bids: !!omap []
         json: !!omap []
     func:
@@ -24,7 +24,7 @@ MRI:
         attributes:
           ProtocolName: cmrr_mbep2d_bold_mb2_invertpe
           ImageType: ORIGINAL\\PRIMARY\\M\\MB\\ND\\MOSAIC
-          SeriesDescription: 'nBack'
+          <<custom:IntendedFor>>: 'nBack'
         bids: !!omap
           - dir: PA
           - task: nBack
@@ -46,7 +46,7 @@ MRI:
         attributes:
           ProtocolName: cmrr_mbep2d_bold_mb2_invertpe
           ImageType: ORIGINAL\\PRIMARY\\M\\MB\\ND\\MOSAIC
-          SeriesDescription: 'rest'
+          <<custom:IntendedFor>>: 'rest'
         bids: !!omap
           - dir: PA
           - task: rest
@@ -132,7 +132,7 @@ MRI:
         attributes:
           ProtocolName: 'gre_field_mapping'
           ImageType: 'ORIGINAL\\PRIMARY\\M\\ND'
-          SeriesDescription: 'HCL/LCL'
+          <<custom:IntendedFor>>: 'HCL/LCL'
         bids: !!omap
           - acq: ~
           - ce: ~
@@ -150,7 +150,7 @@ MRI:
         attributes:
           ProtocolName: 'gre_field_mapping'
           ImageType: 'ORIGINAL\\PRIMARY\\M\\ND'
-          SeriesDescription: 'STROOP'
+          <<custom:IntendedFor>>: 'STROOP'
         bids: !!omap
           - acq: ~
           - ce: ~
@@ -169,7 +169,7 @@ MRI:
         attributes:
           ProtocolName: 'gre_field_mapping'
           ImageType: 'ORIGINAL\\PRIMARY\\P\\ND'
-          SeriesDescription: 'HCL/LCL'
+          <<custom:IntendedFor>>: 'HCL/LCL'
         bids: !!omap
           - acq: ~
           - ce: ~
@@ -189,7 +189,7 @@ MRI:
         attributes:
           ProtocolName: 'gre_field_mapping'
           ImageType: 'ORIGINAL\\PRIMARY\\P\\ND'
-          SeriesDescription: 'STROOP'
+          <<custom:IntendedFor>>: 'STROOP'
         bids: !!omap
           - acq: ~
           - ce: ~
@@ -209,7 +209,7 @@ MRI:
         suffix: B1minus
         attributes:
           ProtocolName: 'al_mtflash3d_sensArray'
-          SeriesDescription: 'PDw'
+          <<custom:IntendedFor>>: 'PDw'
         bids: !!omap
           - acq: HeadPDw
           - mod: ~
@@ -223,7 +223,7 @@ MRI:
         suffix: B1minus
         attributes:
           ProtocolName: 'al_mtflash3d_sensBody'
-          SeriesDescription: 'PDw'
+          <<custom:IntendedFor>>: 'PDw'
         bids: !!omap
           - acq: BodyPDw
           - mod: ~
@@ -243,25 +243,34 @@ MRI:
         json: !!omap
           - EchoTime: <scale-3:EchoTime>
           - B1mapNominalFAValues: <B1mapNominalFAValues>
+          - IntendedFor: 
+              - "fmap/<<subject>>_<<session>>_acq-HeadPDw_B1minus.nii"
+              - "fmap/<<subject>>_<<session>>_acq-BodyPDw_B1minus.nii"
+              - "fmap/<<subject>>_<<session>>_acq-HeadT1w_B1minus.nii"
+              - "fmap/<<subject>>_<<session>>_acq-BodyT1w_B1minus.nii"
+              - "fmap/<<subject>>_<<session>>_acq-HeadMTw_B1minus.nii"
+              - "fmap/<<subject>>_<<session>>_acq-BodyMTw_B1minus.nii"
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/006-al_mtflash3d_sensArray/s1905-0006-00001-000032-01.nii
         example: fmap/sub-003_ses-STROOP_acq-HeadT1w_B1minus
         checked: true
         suffix: B1minus
         attributes:
           ProtocolName: 'al_mtflash3d_sensArray'
-          SeriesDescription: 'T1w'
+          <<custom:IntendedFor>>: 'T1w'
         bids: !!omap
           - acq: HeadT1w
           - mod: ~
         json: !!omap
           - EchoTime: <scale-3:EchoTime>
+          - IntendedFor:
+              - "anat/<<subject>>_<<session>>_acq-<<bids:mod>>_echo-*_MPM.nii"
       - provenance: /home/beliy/Works/bidscoin/test/renamed/sub-003/ses-STROOP/MRI/007-al_mtflash3d_sensBody/s1905-0007-00001-000032-01.nii
         example: fmap/sub-003_ses-STROOP_acq-BodyT1w_B1minus
         checked: true
         suffix: B1minus
         attributes:
           ProtocolName: 'al_mtflash3d_sensBody'
-          SeriesDescription: 'T1w'
+          <<custom:IntendedFor>>: 'T1w'
         bids: !!omap
           - acq: BodyT1w
           - mod: ~
@@ -275,7 +284,7 @@ MRI:
         suffix: B1minus
         attributes:
           ProtocolName: 'al_mtflash3d_sensArray'
-          SeriesDescription: 'MTw'
+          <<custom:IntendedFor>>: 'MTw'
         bids: !!omap
           - acq: HeadMTw
           - mod: ~
@@ -289,7 +298,7 @@ MRI:
         suffix: B1minus
         attributes:
           ProtocolName: 'al_mtflash3d_sensBody'
-          SeriesDescription: 'MTw'
+          <<custom:IntendedFor>>: 'MTw'
         bids: !!omap
           - acq: BodyMTw
           - mod: ~

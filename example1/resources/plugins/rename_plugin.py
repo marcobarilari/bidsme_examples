@@ -8,6 +8,11 @@ from bids import BidsSession
 
 from definitions import Series, checkSeries, plugin_root
 
+"""
+rename_plugin defines all nessesary functions to prepare source
+dataset. In particular it identifies the correct session id and
+retrieves demographic, task and assesment data
+"""
 
 # defining logger this way will prefix plugin messages
 # with plugin name
@@ -43,7 +48,7 @@ time_scale = 1e-3
 #   by plugin
 sub_black_list = []
 
-# subject xls table columns and their renaiming
+# subject xls table columns and their renaming
 excel_col_list = {"Patient": "pat",
                   "Sex": "pat_sex",
                   "Age": "pat_age",
@@ -157,7 +162,7 @@ def SubjectEP(session: BidsSession) -> int:
         return -1
 
     # storing bidsified subject id into session object
-    # optional, but can be easely retrieved
+    # optional, but useful as reference
     session.sub_values["participant_id"] = "sub-" + session.subject
     # looking for subject in dataframe
     prefix = "pat"
@@ -197,7 +202,9 @@ def SubjectEP(session: BidsSession) -> int:
     if pandas.notna(paired):
         session.sub_values["paired"] = "sub-{:03}".format(int(paired))
 
-    # looking for order of sessions
+    #################################
+    # determining order of sessions #
+    #################################
     scans_map.clear()
     scans_order = sorted([os.path.basename(s) for s in
                           tools.lsdirs(os.path.join(rawfolder,
@@ -221,8 +228,8 @@ def SubjectEP(session: BidsSession) -> int:
             # participant left study
             logger.warning("Subject {}({}): seems to be abandoned study"
                            .format(session.sub_values["participant_id"],
-                                   session.sub_values["group"],
-                                   ses)
+                                   session.sub_values["group"]
+                                   )
                            )
             return -1
         elif v not in Series:
@@ -264,7 +271,7 @@ def SessionEP(session: BidsSession) -> int:
     ----------
     session: BidsSession
     """
-    # Setting session name from map
+    # Renaming session name from map
     session.session = scans_map[session.session]
 
 
@@ -276,6 +283,12 @@ def SessionEndEP(session: BidsSession):
     """
     # path contain destination folder, where
     # all data files are placed
+
+    # session.getPath generates bids path based on
+    #   subject and session id, eg. sub-001/ses-HCL
+    #   if parameter empty==True, and no session,
+    #   the generated path will still contain 'ses-'
+    #   empty must be True in preparation plugin
     path = os.path.join(preparefolder,
                         session.getPath(True))
     out_path = os.path.join(path,

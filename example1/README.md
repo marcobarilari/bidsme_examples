@@ -289,10 +289,12 @@ In this step, a generic user-defined dataset is organized in a standardized way.
 To run data preparation, it will be enough to run from `example1` directory
 
 ```python
-python3 bidsme.py prepare --part-template resources/participants.json --recfolder nii=MRI --plugin resources/plugins/rename_plugin.py source/ renamed/
+python3 bidsme.py prepare --part-template resources/participants.json --recfolder nii=MRI --plugin resources/plugins/rename_plugin.py -- source/ renamed/
 ```
 
-The options `--part-template resources/participants.json` will tell bidsme to use participant json file as template for `participants.tsv` file. 
+The options `--part-template resources/participants.json` will tell bidsme to use participant json file as template for `participants.tsv` file.
+The template json file must follow the bids specification for tsv tables definitions, found
+[there](https://bids-specification.readthedocs.io/en/stable/02-common-principles.html#tabular-files).
 The column `participant_id` will be filled automatically, while other columns will be filled 
 by default by `n/a`, unless they are set in plugin:
 
@@ -302,12 +304,25 @@ session.sub_values["sex"] = "M"
 
 Without `--part-template` option the only column in participants file will be `participant_id`.
 
-Option `--recfolder nii=MRI` will tell to `bidsme` that image files are MRI and stored in `nii` folder. 
+Option `-r nii=MRI` will tell to `bidsme` that image files are MRI and stored in `nii` folder. 
 Without this option `bidsme` will be unable to find image files.
+This option can accept a list of arguments if data-files are stored in different sub-folders,
+for example:
+```
+-r <path1>=<data_type_1> <path2>=<data_type_2>
+```
+In this case `bidsme` will search data file of given type in `<subject>/<session>/<path1>` folder.
+Paths can accept basic shell expensions as defined in [glob module](https://docs.python.org/3.6/library/glob.html).
+
 
 Option `--plugin resources/plugins/rename-plugin.py` will tell to bidsme to load corresponding plugin.
 
 Parameters `source/` and `renamed/` tells to bidsme where to search for source dataset and where place prepared dataset.
+
+> Several options accepts a list of arguments. If such options are followed by positional 
+arguments (`source/` and `renamed/` in this case), it will confuse the programm. 
+To avoid this, positional arguments must be preseeded by double dash (`--`), that 
+marks end of optional arguments, and beginning of positional ones
 
 After the execution of preparation, the `rename` folder should contain folders and files:
 
@@ -371,7 +386,7 @@ do not exists in bids dataset.
 So it can be used as check before bidsification.
 
 With plugins, it can be used for data manipulation, and metadata completion.
-For example `resources/plugins/process_plugin.py` fills the `nandiness` column, and merges
+For example `resources/plugins/process_plugin.py` fills the `handiness` column, and merges
 fMRI and diffusion images in single 4D image.
 
 ```python

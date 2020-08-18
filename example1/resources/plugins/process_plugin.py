@@ -3,8 +3,14 @@ import shutil
 import logging
 import random
 
+from bids import BidsSession
+
 from definitions import checkSeries, plugin_root
 
+"""
+process_plugin defines all nessesary functions to pre-process
+prepared dataset. Essentually it just merges 3D images to 4D
+"""
 
 # defining logger this way will prefix plugin messages
 # with plugin name
@@ -27,8 +33,7 @@ dry_run = False
 #####################
 
 # Some sequences within session (namely fMRI and MPM structural) follows same
-# protocol, thus it is impossible to identify them only using
-# metadata
+# protocol, thus it is impossible to identify them only using metadata
 # we will identify them by order they appear in session
 
 # list of sequences in order of acquisition in current session
@@ -41,10 +46,6 @@ seq_list = list()
 
 # The index of current sequence, corresponds to order in the sequence list
 seq_index = -1
-
-# Identified tag for fMRI and MPM MRI
-# This tag will override "SeriesDescription" DICOM tag
-IntendedFor = ""
 
 
 def InitEP(source: str, destination: str, dry: bool) -> int:
@@ -69,7 +70,7 @@ def InitEP(source: str, destination: str, dry: bool) -> int:
     dry_run = dry
 
 
-def SubjectEP(scan):
+def SubjectEP(scan: BidsSession) -> int:
     """
     Subject modification
 
@@ -79,11 +80,11 @@ def SubjectEP(scan):
     # values in scan.sub_values are pre-filled
     # from participants.tsv file, no need to refill them.
     # If needed to remove value from participants, you
-    # can set it to None
+    # can set it to None, or set to new value
     scan.sub_values["handiness"] = random.choice([0, 1])
 
 
-def SessionEP(scan):
+def SessionEP(scan: BidsSession) -> int:
     """
     Session files modifications
 
@@ -96,11 +97,12 @@ def SessionEP(scan):
     ######################################
     # Initialisation of sesion variables #
     ######################################
-    # retrieving list of sequences and puttintg them into list
+    # retrieving sequences and puttintg them into list
     global seq_list
     global seq_index
     path = os.path.join(scan.in_path, "MRI")
     seq_list = sorted(os.listdir(path))
+    # removing leading sequence number from name
     seq_list = [s.split("-", 1)[1] for s in seq_list]
     seq_index = -1
 
@@ -112,6 +114,7 @@ def SessionEP(scan):
     #############################################
     # Checking for existance of auxiliary files #
     #############################################
+    # BidsSession.in_path contains current session folder path
     aux_input = os.path.join(scan.in_path, "auxiliary")
     if scan.session in ("ses-LCL", "ses-HCL"):
         if not os.path.isdir(aux_input):
@@ -134,8 +137,12 @@ def SequenceEP(recording):
     """
 
     global seq_index
-    global IntendedFor
-    IntendedFor = ""
+
+    # recording.custom is a dictionary for user-defined variables
+    # that can be acessed from bidsmap
+    # they are initialized at new sequence, and conserved for all files
+    # within sequence, can be used to define sequence-global parameters
+    recording.custom["IntendedFor"] = ""
     seq_index += 1
     recid = seq_list[seq_index]
 
@@ -151,13 +158,13 @@ def SequenceEP(recording):
     if recid == "cmrr_mbep2d_bold_mb2_invertpe":
         mod = seq_list[seq_index + 1]
         if mod.endswith("cmrr_mbep2d_bold_mb2_task_fat"):
-            IntendedFor = "nBack"
+            recording.custom["IntendedFor"] = "nBack"
         elif mod.endswith("cmrr_mbep2d_bold_mb2_task_nfat"):
-            IntendedFor = "nBack"
+            recording.custom["IntendedFor"] = "nBack"
         elif mod.endswith("cmrr_mbep2d_bold_mb2_rest"):
-            IntendedFor = "rest"
+            recording.custom["IntendedFor"] = "rest"
         else:
-            IntendedFor = "invalid"
+            recording.custom["IntendedFor"] = "invalid"
             logger.warning("{}: Unknown session {}"
                            .format(recording.recIdentity(),
                                    mod))
@@ -165,49 +172,41 @@ def SequenceEP(recording):
     # sessions
     elif recid == "gre_field_mapping":
         if recording.sesId() in ("ses-HCL", "ses-LCL"):
-            IntendedFor = "HCL/LCL"
+            recording.custom["IntendedFor"] = "HCL/LCL"
         elif recording.sesId() == "ses-STROOP":
-            IntendedFor = "STROOP"
+            recording.custom["IntendedFor"] = "STROOP"
         else:
             logger.warning("{}: Unknown session {}"
                            .format(recording.recIdentity(),
                                    recording.sesId()))
-            IntendedFor = "invalid"
+            recording.custom["IntendedFor"] = "invalid"
     # fmaps sesnsBody and sesnArray are taken just before
     # structural PD , T1 and MT. Looking into next sequences
     # will allow the identification
     elif recid == "al_mtflash3d_sensArray":
         det = seq_list[seq_index + 2]
         if det.endswith("al_mtflash3d_PDw"):
-            IntendedFor = "PDw"
+            recording.custom["IntendedFor"] = "PDw"
         elif det.endswith("al_mtflash3d_T1w"):
-            IntendedFor = "T1w"
+            recording.custom["IntendedFor"] = "T1w"
         elif det.endswith("al_mtflash3d_MTw"):
-            IntendedFor = "MTw"
+            recording.custom["IntendedFor"] = "MTw"
         else:
             logger.warning("{}: Unable determine modality"
                            .format(recording.recIdentity()))
-            IntendedFor = "invalid"
+            recording.custom["IntendedFor"] = "invalid"
     elif recid == "al_mtflash3d_sensBody":
         det = seq_list[seq_index + 1]
         if det.endswith("al_mtflash3d_PDw"):
-            IntendedFor = "PDw"
+            recording.custom["IntendedFor"] = "PDw"
         elif det.endswith("al_mtflash3d_T1w"):
-            IntendedFor = "T1w"
+            recording.custom["IntendedFor"] = "T1w"
         elif det.endswith("al_mtflash3d_MTw"):
-            IntendedFor = "MTw"
+            recording.custom["IntendedFor"] = "MTw"
         else:
             logger.warning("{}: Unable determine modality"
                            .format(recording.recIdentity()))
-            IntendedFor = "invalid"
-
-
-def RecordingEP(recording):
-    """
-    Setting "SeriesDescription" tag for given recording.
-    """
-    if IntendedFor != "":
-        recording.setAttribute("SeriesDescription", IntendedFor)
+            recording.custom["IntendedFor"] = "invalid"
 
 
 def SequenceEndEP(outfolder, recording):
@@ -227,7 +226,7 @@ def SequenceEndEP(outfolder, recording):
                             modality))
         first_file = os.path.join(outfolder, recording.files[0])
         # "convertion" is just copy of first file in sequence
-        # in real application a real external tool should be used
+        # in real application a external tool should be used
         shutil.copy2(first_file, f4D + ".nii")
         first_file = os.path.splitext(first_file)[0] + ".json"
         # copying the first file json to allow the identification
