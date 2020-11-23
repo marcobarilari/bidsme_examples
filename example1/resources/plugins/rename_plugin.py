@@ -175,9 +175,9 @@ def SubjectEP(session: BidsSession) -> int:
         prefix = "cnt"
         index = df_subjects.loc[df_subjects[prefix] == sub_id].index
         session.sub_values["group"] = "control"
-        if len(index) == 0:
-            raise KeyError("Subject {} not found in table"
-                           .format(sub_id))
+    if len(index) == 0:
+        raise KeyError("Subject {} not found in table"
+                       .format(sub_id))
     if len(index) > 1:
         logger.warning("Subject {}: several column entries present"
                        .format(sub_id))

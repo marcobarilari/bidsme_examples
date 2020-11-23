@@ -58,9 +58,9 @@ Series = {
 
 
 countSeries = {}
-for ses in Series:
+for ses, value in Series.items():
     countSeries[ses] = dict.fromkeys(Series[ses], 0)
-    for ser in Series[ses]:
+    for ser in value:
         countSeries[ses][ser] += 1
 
 
