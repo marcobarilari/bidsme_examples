@@ -36,7 +36,7 @@ dry_run = False
 # we will identify them by order they appear in session
 
 # list of sequences in order of acquisition in current session
-seq_list = list()
+seq_list = []
 
 
 #####################
